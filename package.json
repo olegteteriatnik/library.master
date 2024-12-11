@@ -1,0 +1,15 @@
+{
+  "name": "library.master",
+  "version": "1.0.0",
+  "description": "Test IDP project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oleg Teteriatnik",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  }
+}
