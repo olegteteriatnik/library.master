@@ -1,29 +1,21 @@
-import FileReader from './services/FileReader/FileReader';
-import * as readline from 'readline';
+import { startServer, startFileReader } from './server';
 
-const fileReader = new FileReader();
-const userInput = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
+async function main() {
+    const mode = process.argv[2];
 
-userInput.question('Input path to file: ', async (filePath) => {
-    try {
-        if (!filePath.trim()) {
-            console.error('Error: You did not provide a file path.');
-        } else if (!filePath.includes('/') && !filePath.includes('\\')) {
-            console.error('Error: provided value is not a valid path.')
-        } else {
-            const content = await fileReader.readFile(filePath);
-            console.log('File data: ', content);
-        }
-    } catch (error: any) {
-        if (error.message.includes('ENOENT')) {
-            console.error(`Error: File not found at path ${filePath}.`)
-        } else {
-            console.error('Error by file reading: ', error.message);
-        }
-    } finally {
-        userInput.close();
+    if (mode === 'server') {
+        console.log('Starting server...');
+        await startServer();
+    } else if (mode === 'fileReader') {
+        console.log('Starting FileReader...');
+        await startFileReader();
+    } else {
+        console.error('Invalid mode. Use "server" or "fileReader".');
+        process.exit(1);
     }
+}
+
+main().catch((error) => {
+    console.error('Error in main: ', error.message);
+    process.exit(1);
 });
