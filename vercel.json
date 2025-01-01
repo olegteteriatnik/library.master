@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/src/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["dist/**/*"]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/src/index.js?server"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "VAULT_TOKEN": "@vault_token"
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
+}
