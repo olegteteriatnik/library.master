@@ -19,5 +19,6 @@
     "DATABASE_URL": "@database_url",
     "VAULT_TOKEN": "@vault_token"
   },
+  "buildCommand": "npm run build",
   "outputDirectory": "dist"
 }
