@@ -1,4 +1,4 @@
-import {Pool} from 'pg';
+import { Pool } from 'pg';
 import { getSecret } from './vault';
 import DbData from '../params/interfaces/DbData';
 
