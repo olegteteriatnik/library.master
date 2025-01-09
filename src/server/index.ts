@@ -12,6 +12,16 @@ import { initializeSecretKey } from '../services/AuthService/AuthService';
 async function startServer() {
     const app = express();
     const port = process.env.PORT || 3000;
+    const baseApiUrl = process.env.BASE_API_URL || `http://localhost:${port}`;
+
+    swaggerConfig.definition!.servers = [
+        {
+            url: baseApiUrl,
+            description: process.env.NODE_ENV === 'production' ? 'Production server' : 'Local server',
+        },
+    ];
+
+
     const swaggerSpec = swaggerJSDoc({
         ...swaggerConfig,
         securityDefinitions: {
