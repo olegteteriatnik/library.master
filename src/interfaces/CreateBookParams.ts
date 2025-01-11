@@ -1,4 +1,4 @@
-export interface BookAddPayload {
+export interface CreateBookParams {
     title: string;
     author: string;
     year: number;

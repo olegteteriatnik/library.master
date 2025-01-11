@@ -10,10 +10,10 @@ class Database {
             try {
                 const dbData: DbData = await getSecret('database');
                 Database.instance = new Pool({
-                    user: dbData.dbUsername,
-                    host: dbData.dbHost,
+                    user: dbData.username,
+                    host: dbData.host,
                     database: 'library-db',
-                    password: dbData.dbPassword,
+                    password: dbData.password,
                     port: 5432,
                     ssl: {
                         rejectUnauthorized: false,

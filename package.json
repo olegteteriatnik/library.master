@@ -6,8 +6,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc",
-    "start": "node dist/src/index.js server",
-    "start:server": "node dist/src/index.js server",
+    "start": "node dist/src/index.js",
     "start:fileReader": "node dist/src/index.js fileReader"
   },
   "author": "Oleg Teteriatnik",
@@ -27,6 +26,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",

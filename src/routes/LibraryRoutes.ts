@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { authenticate } from '../middleware/AuthMiddleware';
-import * as libraryController from '../controllers/LibraryController';
+import { validateRequest } from '../middleware/ValidateRequest';
+import { bookSchema } from '../services/LibraryService/validator';
+import LibraryController from '../controllers/LibraryController';
 
 const router = Router();
+const libraryController = new LibraryController();
 
 /**
  * @swagger
@@ -37,6 +40,6 @@ const router = Router();
  *       401:
  *         description: Unauthorized
  */
-router.post('/addBook', authenticate, libraryController.add);
+router.post('/addBook', authenticate, validateRequest(bookSchema), libraryController.add);
 
 export default router;
