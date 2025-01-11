@@ -17,9 +17,22 @@ export async function getSecret(key: keyof typeof config) {
     const HCP_CLIENT_SECRET = getEnvVariable('HCP_CLIENT_SECRET');
     const HCP_AUTH_URL = getEnvVariable('HCP_AUTH_URL');
     const HCP_API_BASE_URL = getEnvVariable('HCP_API_BASE_URL');
+    const HCP_AUDIENCE = getEnvVariable('HCP_AUDIENCE');
 
-    if (!HCP_CLIENT_ID || !HCP_CLIENT_SECRET || !HCP_CLIENT_SECRET) {
-        throw new Error('HCP_CLIENT_ID or HCP_CLIENT_SECRET is missing in environment variables');
+    if (!HCP_CLIENT_ID) {
+        throw new Error('HCP_CLIENT_ID is missing in environment variables');
+    }
+
+    if (!HCP_CLIENT_SECRET) {
+        throw new Error('HCP_CLIENT_SECRET is missing in environment variables');
+    }
+
+    if (!HCP_AUTH_URL) {
+        throw new Error('HCP_AUTH_URL is missing in environment variables');
+    }
+
+    if (!HCP_API_BASE_URL) {
+        throw new Error('HCP_API_BASE_URL is missing in environment variables');
     }
 
     try {
@@ -29,7 +42,7 @@ export async function getSecret(key: keyof typeof config) {
                 client_id: HCP_CLIENT_ID,
                 client_secret: HCP_CLIENT_SECRET,
                 grant_type: 'client_credentials',
-                audience: 'https://api.hashicorp.cloud',
+                audience: HCP_AUDIENCE,
             }).toString(),
             {
                 headers: {

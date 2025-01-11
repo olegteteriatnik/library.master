@@ -1,7 +1,7 @@
 import { startServer, startFileReader } from './server';
 
 async function main() {
-    const mode = process.argv[2];
+    const mode = process.argv[2] || 'server';
 
     if (mode === 'server') {
         console.log('Starting server...');

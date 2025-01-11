@@ -1,9 +1,9 @@
 import Database from '../../../config/database';
-import { BookAddPayload } from './interfaces/BookAddPayload';
-import { BookEntity } from './interfaces/BookEntity';
+import { CreateBookParams } from '../../interfaces/CreateBookParams';
+import { BookEntity } from '../../interfaces/BookEntity';
 
 export default class LibraryService {
-    public static async add(data: BookAddPayload): Promise<BookEntity> {
+    public static async add(data: CreateBookParams): Promise<BookEntity> {
         const { title, author, year, isAvailable } = data;
         const pool = await Database.getInstance();
         const query = `

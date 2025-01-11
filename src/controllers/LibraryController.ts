@@ -1,19 +1,16 @@
-import { Request, Response, RequestHandler } from 'express';
+import { Request, Response } from 'express';
 import LibraryService from '../services/LibraryService/LibraryService';
+import { CreateBookParams } from '../interfaces/CreateBookParams';
 
-export const add: RequestHandler = async (req: Request, res: Response) => {
-    const { title, author, year, isAvailable } = req.body;
-
-    if (!title || !author || !year) {
-        res.status(400).json({ message: 'Title, author, and year are required' });
-        return;
+export default class LibraryController {
+    public async add(req: Request, res: Response): Promise<void> {
+        try {
+            const { title, author, year, isAvailable } = req.body as CreateBookParams;
+            const newBook = await LibraryService.add({ title, author, year, isAvailable });
+            res.status(200).json(newBook);
+        } catch (error: any) {
+            console.error('Error adding book: ', error.message);
+            res.status(500).json({ message: 'Failed to add book' });
+        }
     }
-
-    try {
-        const newBook = await LibraryService.add({ title, author, year, isAvailable });
-        res.status(200).json(newBook);
-    } catch (error: any) {
-        console.error('Error adding book: ', error.message);
-        res.status(500).json({ message: 'Failed to add book' });
-    }
-};
+}
