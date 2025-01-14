@@ -115,6 +115,40 @@ To explore and test the production API endpoints, access the Swagger documentati
     }
    ```
 
+### Remove a Book
+- URL: /books/remove
+- Method: DELETE
+- Payload:
+   ```
+    {
+    "id": 10
+    }
+  ```
+  
+### Get books list
+- URL: /books/list
+- Method: GET
+- Params:
+  - `page` (optional): The page number, default is 1.
+  - `pageSize` (optional): The page size, default is 10.
+  - `sortBy` (optional): Field sort by, can be `title`, `author` or `year`.
+
+### Search books
+- URL: /books/search
+- Method: GET
+- Params:
+  - `title` (optional): Filter by book title (case-insensitive, partial match).
+  - `author` (optional): Filter by author name (case-insensitive, partial match).
+  - `year` (optional): Filter by publication year.
+  - `isAvailable` (optional): Filter by availability (`true` or `false`).
+  - `page` (optional): The page number, default is 1.
+  - `pageSize` (optional): Number of books per page, default is 10.
+
+### Check book availability
+- URL: /books/checkAvailability
+- Method: GET
+- Params:
+  - `id` (required): ID of the book to check availability.
 
 ---
 
