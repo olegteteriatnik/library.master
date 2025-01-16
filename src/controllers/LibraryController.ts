@@ -57,7 +57,11 @@ export default class LibraryController {
             const availabilityResult = await LibraryService.checkAvailability(Number(id));
             res.status(200).json(availabilityResult);
         } catch (error: any) {
-            res.status(500).json({ message: error.message });
+            if (error.message.includes('not found')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: error.message });
+            }
         }
     }
 }
