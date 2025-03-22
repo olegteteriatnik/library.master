@@ -10,5 +10,6 @@ COPY . .
 
 ENV NODE_ENV=production
 
+RUN npm run test:unit
 RUN npm run build
 CMD ["npm", "start"]
