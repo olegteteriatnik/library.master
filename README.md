@@ -88,19 +88,19 @@ Library Master includes unit tests for core services, written using [Mocha](http
     ```bash
     npm run test:unit
     ```
-- This will execute all test files matching the pattern: tests/unit/**/*.unit.test.ts
+- This will execute all test files matching the pattern: tests/unit/specs/**/*.unit.test.ts
 - Tests are written using ES modules (import/export) and executed using ts-node with ESM support.
 - Unit tests run automatically during deployment. If any test fails, the deployment is aborted.
 
 ### Structure
 
-- Unit tests are located under tests/unit/
+- Unit tests are located under tests/unit/specs/
 - Each service has its own dedicated unit test file to ensure focused and isolated testing.
 
 ### Add Your Own Tests
 
 To create a new unit test:
-1. Create a new .unit.test.ts file inside tests/unit/
+1. Create a new .unit.test.ts file inside tests/unit/specs/
 2. Use describe and it blocks from Mocha
 3. Use chai.expect for assertions
 4. Use sinon for mocking and stubbing external dependencies

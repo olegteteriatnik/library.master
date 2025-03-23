@@ -29,18 +29,10 @@ export default class LibraryService {
             WHERE id = $1;
         `
         const values = [data.id];
+        const result = await pool.query(query, values);
 
-        try {
-            const result = await pool.query(query, values);
-
-            if (result.rowCount === 0) {
-                new Error(`Book with id ${data.id} not found`);
-            }
-
-            return result.rows[0];
-        } catch (error: any) {
-            console.error(`Failed to delete book with id ${data.id}:`, error.message);
-            throw error;
+        if (result.rowCount === 0) {
+            throw new Error(`Book with id ${data.id} not found`);
         }
     }
 
