@@ -107,6 +107,51 @@ To create a new unit test:
 
 ---
 
+## Jenkins CI/CD Integration
+
+Library Master uses Jenkins for building, testing, and deploying the application.
+
+### Jenkins Pipelines
+
+There are **two separate pipelines**:
+
+1. **Builds** (`Multibranch Pipeline`):
+    - Builds application in any branch.
+    - Tags Docker image using format: `library.master-app:<branch>_<buildNumber>`
+    - Runs unit tests.
+
+2. **Deploys** (`Regular Pipeline`):
+    - Deploys specific build (any branch).
+    - Requires parameters:
+        - `BRANCH_NAME`: the name of the branch to deploy
+        - `BUILD_ID`: the Jenkins build number (used as the image tag)
+
+### Credentials
+
+All secrets and environment variables (like `BASE_API_URL`, `HCP_CLIENT_ID`, etc.) are stored securely in Jenkins Credentials.
+
+### Access Jenkins
+
+- Jenkins URL: `http://203.161.47.9:8080/`
+- Jenkins user credentials are the same as credentials for endpoints
+
+### Build Workflow
+
+1. Push your changes to any branch.
+2. Jenkins automatically runs the **Builds** pipeline for that branch.
+3. Once build succeeds, a Docker image is created with a tag matching the branch and build number.
+
+### Deploy Workflow
+
+1. Go to the **Deploys** job in Jenkins.
+2. Click **Build with Parameters**.
+3. Enter:
+    - `BRANCH_NAME`: name of the branch to deploy (e.g., `feat/86956zhpp-set_up_jenkins`)
+    - `BUILD_ID`: build number from the **Builds** job (e.g., `9`)
+4. The app will be deployed on `http://203.161.47.9:3100/library-master-api/`
+
+---
+
 ## Production Setup
 
 ### Swagger Documentation

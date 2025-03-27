@@ -1,0 +1,65 @@
+pipeline {
+  agent any
+
+  parameters {
+    string(name: 'BRANCH_NAME', defaultValue: '', description: 'Branch to deploy from')
+    string(name: 'BUILD_ID', defaultValue: '', description: 'Build ID for the Docker image')
+  }
+
+  environment {
+    IMAGE_NAME = 'library.master-app'
+    IMAGE_TAG = "${params.BRANCH_NAME}_${params.BUILD_ID}".replaceAll('/', '-')
+    CONTAINER_NAME = 'library.master-running'
+    PORT_OUTSIDE = '3100'
+    PORT_INSIDE = '3000'
+  }
+
+  stages {
+    stage('Stop Previous Container') {
+      steps {
+        sh "docker rm -f ${CONTAINER_NAME} || true"
+      }
+    }
+
+    stage('Run Container') {
+      steps {
+        withCredentials([
+          string(credentialsId: 'BASE_API_URL', variable: 'BASE_API_URL'),
+          string(credentialsId: 'HCP_API_BASE_URL', variable: 'HCP_API_BASE_URL'),
+          string(credentialsId: 'HCP_AUDIENCE', variable: 'HCP_AUDIENCE'),
+          string(credentialsId: 'HCP_AUTH_URL', variable: 'HCP_AUTH_URL'),
+          string(credentialsId: 'HCP_CLIENT_ID', variable: 'HCP_CLIENT_ID'),
+          string(credentialsId: 'HCP_CLIENT_SECRET', variable: 'HCP_CLIENT_SECRET'),
+        ]) {
+          sh """
+            docker run -d --name ${CONTAINER_NAME} \\
+              -e NODE_ENV=production \\
+              -e BASE_API_URL=$BASE_API_URL \\
+              -e HCP_API_BASE_URL=$HCP_API_BASE_URL \\
+              -e HCP_AUDIENCE=$HCP_AUDIENCE \\
+              -e HCP_AUTH_URL=$HCP_AUTH_URL \\
+              -e HCP_CLIENT_ID=$HCP_CLIENT_ID \\
+              -e HCP_CLIENT_SECRET=$HCP_CLIENT_SECRET \\
+              -p ${PORT_OUTSIDE}:${PORT_INSIDE} \\
+              ${IMAGE_NAME}:${IMAGE_TAG}
+          """
+        }
+      }
+    }
+
+    stage('Verify') {
+      steps {
+        sh 'docker ps | grep ${CONTAINER_NAME} || true'
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "✅ Deployed: ${IMAGE_NAME}:${IMAGE_TAG}"
+    }
+    failure {
+      echo '❌ Deployment failed.'
+    }
+  }
+}

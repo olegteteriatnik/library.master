@@ -1,0 +1,43 @@
+pipeline {
+  agent any
+
+  environment {
+    IMAGE_NAME = 'library.master-app'
+    IMAGE_TAG = "${env.BRANCH_NAME}_${env.BUILD_ID}".replaceAll('/', '-')
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
+      }
+    }
+
+    stage('Unit Tests') {
+      steps {
+        sh 'docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} npm run test:unit'
+      }
+    }
+
+    stage('Verify') {
+      steps {
+        sh 'docker images | grep ${IMAGE_NAME}'
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "✅ Build successful: ${IMAGE_NAME}:${IMAGE_TAG}"
+    }
+    failure {
+      echo '❌ Build failed.'
+    }
+  }
+}
