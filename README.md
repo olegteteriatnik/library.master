@@ -157,7 +157,7 @@ All secrets and environment variables (like `BASE_API_URL`, `HCP_CLIENT_ID`, etc
 ### Swagger Documentation
 To explore and test the production API endpoints, access the Swagger documentation at:
    ```
-    https://library-master.onrender.com/library-master-api/
+    http://203.161.47.9:3100/library-master-api/
    ```
 
 ### Authentication
