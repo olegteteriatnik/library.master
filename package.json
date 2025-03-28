@@ -6,8 +6,8 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc",
-    "start": "node dist/src/index.js",
-    "start:fileReader": "node dist/src/index.js fileReader",
+    "start": "node dist/server/src/index.js",
+    "start:fileReader": "node dist/server/src/index.js fileReader",
     "test:unit": "NODE_OPTIONS='--loader ts-node/esm' mocha --config tests/.mocharc.json"
   },
   "author": "Oleg Teteriatnik",

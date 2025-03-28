@@ -2,8 +2,8 @@ import sinon from 'sinon';
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from '../helpers/chai';
 import { expectErrorFrom } from '../helpers/expectError';
-import LibraryService from '../../../src/services/LibraryService/LibraryService';
-import Database from '../../../config/database';
+import LibraryService from '../../../server/src/services/LibraryService/LibraryService';
+import Database from '../../../server/config/database';
 
 let sandbox: sinon.SinonSandbox;
 

@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from '../helpers/chai';
 import { expectErrorFrom } from '../helpers/expectError';
-import FileReader from '../../../src/services/FileReader/FileReader';
+import FileReader from '../../../server/src/services/FileReader/FileReader';
 
 let sandbox: sinon.SinonSandbox;
 
