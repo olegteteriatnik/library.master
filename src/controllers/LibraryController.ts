@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import LibraryService from '../services/LibraryService/LibraryService';
 import { CreateBookParams } from '../interfaces/CreateBookParams';
-import { RemoveBookParams } from '../interfaces/RemoveBookParams';
+import { DeleteBookParams } from '../interfaces/DeleteBookParams';
 import { ListBooksParams } from '../interfaces/ListBooksParams';
 import { SearchBooksParams } from '../interfaces/SearchBooksParams';
 
 export default class LibraryController {
-    public async add(req: Request, res: Response): Promise<void> {
+    public async create(req: Request, res: Response): Promise<void> {
         try {
             const { title, author, year, isAvailable } = req.body as CreateBookParams;
             const newBook = await LibraryService.add({ title, author, year, isAvailable });
@@ -17,9 +17,46 @@ export default class LibraryController {
         }
     }
 
-    public async remove(req: Request, res: Response): Promise<void> {
+    public async read(req: Request, res: Response): Promise<void> {
         try {
-            const { id } = req.body as RemoveBookParams;
+            const { id } = req.query;
+
+            const book = await LibraryService.getById(Number(id));
+            res.status(200).json(book);
+        } catch (error: any) {
+            if (error.message.includes('not found')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: error.message });
+            }
+        }
+    }
+
+    public async update(req: Request, res: Response): Promise<void> {
+        try {
+            const { id, title, author, year, isAvailable } = req.body;
+
+            const updatedBook = await LibraryService.update({
+                id: Number(id),
+                title,
+                author,
+                year,
+                isAvailable,
+            });
+
+            res.status(200).json(updatedBook);
+        } catch (error: any) {
+            if (error.message.includes('not found')) {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: error.message });
+            }
+        }
+    }
+
+    public async delete(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.body as DeleteBookParams;
             const removedBook = await LibraryService.remove({ id });
             res.status(200).json(removedBook);
         } catch (error: any) {

@@ -5,11 +5,22 @@ Also, it includes basic Node.js project that reads data from a file and displays
 
 ## Features
 
-- Add books.
-- Secure authentication using JWT.
-- Interactive Swagger documentation for API endpoints.
-- Reads any text-based file and displays its content in the console.
-- Interactive console input for specifying file paths.
+### Library Management API
+- Full CRUD operations for books: Create, Read, Update, Delete
+- Pagination, sorting, and searching books by title, author, year, and availability
+- Check availability of a specific book
+- Secure JWT-based authentication for protected endpoints
+- Interactive Swagger UI for exploring and testing API endpoints
+
+### File Reader Utility
+- Command-line tool for reading and displaying content of any text-based file
+- Interactive console prompt for entering file path
+
+### Quality and CI/CD
+- Modular architecture with unit-tested services
+- Mocha, Chai, and Sinon for testing
+- Integrated with Jenkins for build, test, and deploy
+- CI pipeline blocks deployment on failed tests
 
 ---
 
@@ -176,8 +187,8 @@ To explore and test the production API endpoints, access the Swagger documentati
 
 ## Example Endpoints
 
-### Add a Book
-- URL: /books/addBook
+### Create a Book
+- URL: /books/create
 - Method: POST
 - Payload:
    ```
@@ -189,8 +200,8 @@ To explore and test the production API endpoints, access the Swagger documentati
     }
    ```
 
-### Remove a Book
-- URL: /books/remove
+### Delete a Book
+- URL: /books/delete
 - Method: DELETE
 - Payload:
    ```

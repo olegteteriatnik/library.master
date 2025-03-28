@@ -633,4 +633,236 @@ describe('LibraryService', () => {
             [bookId]
         );
     });
+
+    it('getById. should return book when found', async () => {
+        const bookId = 42;
+        const expectedBook = {
+            id: bookId,
+            title: 'Test Book',
+            author: 'Author X',
+            year: 2024,
+            isAvailable: true,
+        };
+
+        const dbRow = { rows: [expectedBook] };
+        const transportService = { query: sandbox.stub().resolves(dbRow) };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        const result = await LibraryService.getById(bookId);
+
+        expect(result).to.deep.equal(expectedBook);
+        expect(transportService.query).to.have.been.calledWithMatch(
+            sinon.match.string,
+            [bookId]
+        );
+    });
+
+    it('getById. should throw if book with given id does not exist', async () => {
+        const bookId = 999;
+        const dbRow = { rows: [] };
+        const transportService = { query: sandbox.stub().resolves(dbRow) };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        await expectErrorFrom(
+            LibraryService.getById(bookId),
+            { message: `Book with id ${bookId} not found` }
+        );
+
+        expect(transportService.query).to.have.been.calledWithMatch(
+            sinon.match.string,
+            [bookId]
+        );
+    });
+
+    it('getById. should throw if database query fails', async () => {
+        const bookId = 1;
+        const dbError = new Error('Database connection lost');
+        const transportService = { query: sandbox.stub().rejects(dbError) };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        await expectErrorFrom(
+            LibraryService.getById(bookId),
+            { message: 'Database connection lost' }
+        );
+
+        expect(transportService.query).to.have.been.calledWithMatch(
+            sinon.match.string,
+            [bookId]
+        );
+    });
+
+    it('update. should update only the author field', async () => {
+        const bookId = 1;
+        const existingBook = {
+            id: bookId,
+            title: 'Old Title',
+            author: 'Old Author',
+            year: 2000,
+            isAvailable: true,
+        };
+
+        const updatedAuthor = 'New Author';
+
+        const expectedResult = {
+            ...existingBook,
+            author: updatedAuthor,
+        };
+
+        const dbRow = { rows: [expectedResult] };
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [existingBook] })
+                .onSecondCall().resolves(dbRow),
+        };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        const result = await LibraryService.update({
+            id: bookId,
+            author: updatedAuthor,
+        });
+
+        expect(result).to.deep.equal(expectedResult);
+        expect(transportService.query).to.have.been.calledTwice;
+        expect(transportService.query.secondCall.args[1]).to.deep.equal([
+            existingBook.title,
+            updatedAuthor,
+            existingBook.year,
+            existingBook.isAvailable,
+            bookId,
+        ]);
+    });
+
+    it('update. should update only the isAvailable field', async () => {
+        const bookId = 2;
+        const existingBook = {
+            id: bookId,
+            title: 'Some Book',
+            author: 'Author',
+            year: 2010,
+            isAvailable: true,
+        };
+
+        const expectedResult = {
+            ...existingBook,
+            isAvailable: false,
+        };
+
+        const dbRow = { rows: [expectedResult] };
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [existingBook] })
+                .onSecondCall().resolves(dbRow),
+        };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        const result = await LibraryService.update({
+            id: bookId,
+            isAvailable: false,
+        });
+
+        expect(result).to.deep.equal(expectedResult);
+        expect(transportService.query.secondCall.args[1]).to.deep.equal([
+            existingBook.title,
+            existingBook.author,
+            existingBook.year,
+            false,
+            bookId,
+        ]);
+    });
+
+    it('update. should update all fields', async () => {
+        const bookId = 3;
+        const existingBook = {
+            id: bookId,
+            title: 'Original Title',
+            author: 'Original Author',
+            year: 1999,
+            isAvailable: false,
+        };
+
+        const updatePayload = {
+            id: bookId,
+            title: 'Updated Title',
+            author: 'Updated Author',
+            year: 2025,
+            isAvailable: true,
+        };
+
+        const dbRow = { rows: [updatePayload] };
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [existingBook] })
+                .onSecondCall().resolves(dbRow),
+        };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        const result = await LibraryService.update(updatePayload);
+
+        expect(result).to.deep.equal(updatePayload);
+        expect(transportService.query.secondCall.args[1]).to.deep.equal([
+            updatePayload.title,
+            updatePayload.author,
+            updatePayload.year,
+            updatePayload.isAvailable,
+            bookId,
+        ]);
+    });
+
+    it('update. should throw if book with given id does not exist', async () => {
+        const bookId = 999;
+
+        const transportService = {
+            query: sandbox.stub().resolves({ rows: [] }),
+        };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        await expectErrorFrom(
+            LibraryService.update({ id: bookId, title: 'New Title' }),
+            { message: `Book with id ${bookId} not found` }
+        );
+
+        expect(transportService.query).to.have.been.calledOnce;
+        expect(transportService.query).to.have.been.calledWithMatch(
+            sinon.match.string,
+            [bookId]
+        );
+    });
+
+    it('update. should throw if update query fails', async () => {
+        const bookId = 4;
+        const existingBook = {
+            id: bookId,
+            title: 'Some Title',
+            author: 'Some Author',
+            year: 2000,
+            isAvailable: true,
+        };
+
+        const dbError = new Error('Update failed');
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [existingBook] })
+                .onSecondCall().rejects(dbError),
+        };
+
+        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+
+        await expectErrorFrom(
+            LibraryService.update({ id: bookId, year: 2024 }),
+            { message: 'Update failed' }
+        );
+
+        expect(transportService.query).to.have.been.calledTwice;
+    });
 });
