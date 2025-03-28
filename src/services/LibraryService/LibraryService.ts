@@ -1,11 +1,12 @@
 import Database from '../../../config/database';
 import { CreateBookParams } from '../../interfaces/CreateBookParams';
 import { BookEntity } from '../../interfaces/BookEntity';
-import { RemoveBookParams } from '../../interfaces/RemoveBookParams';
+import { DeleteBookParams } from '../../interfaces/DeleteBookParams';
 import { ListBooksParams } from '../../interfaces/ListBooksParams';
 import { ListBooksResponse } from '../../interfaces/ListBooksResponse';
 import { SearchBooksParams } from '../../interfaces/SearchBooksParams';
 import { CheckAvailabilityResponse } from '../../interfaces/CheckAvailabilityResponse';
+import { UpdateBookParams } from '../../interfaces/UpdateBookParams';
 
 export default class LibraryService {
     public static async add(data: CreateBookParams): Promise<BookEntity> {
@@ -17,12 +18,50 @@ export default class LibraryService {
             RETURNING *;
         `;
         const values = [title, author, year, isAvailable ?? true];
-
         const result = await pool.query(query, values);
         return result.rows[0];
     }
 
-    public static async remove(data: RemoveBookParams): Promise<void> {
+    public static async getById(id: number): Promise<BookEntity> {
+        const pool = await Database.getInstance();
+
+        const query = `
+        SELECT * FROM books WHERE id = $1;
+    `;
+
+        const result = await pool.query(query, [id]);
+
+        if (result.rows.length === 0) {
+            throw new Error(`Book with id ${id} not found`);
+        }
+
+        return result.rows[0] as BookEntity;
+    }
+
+    public static async update(data: UpdateBookParams): Promise<BookEntity> {
+        const { id, title, author, year, isAvailable } = data;
+        const pool = await Database.getInstance();
+        const existingBook = await this.getById(id);
+        const newTitle = title ?? existingBook.title;
+        const newAuthor = author ?? existingBook.author;
+        const newYear = year ?? existingBook.year;
+        const newAvailability = isAvailable ?? existingBook.isAvailable;
+
+        const query = `
+        UPDATE books
+        SET title = $1, author = $2, year = $3, "isAvailable" = $4
+        WHERE id = $5
+        RETURNING *;
+    `;
+
+        const values = [newTitle, newAuthor, newYear, newAvailability, id];
+
+        const result = await pool.query(query, values);
+
+        return result.rows[0] as BookEntity;
+    }
+
+    public static async remove(data: DeleteBookParams): Promise<void> {
         const pool = await Database.getInstance();
         const query = `
             DELETE FROM books

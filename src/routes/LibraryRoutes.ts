@@ -3,11 +3,12 @@ import { authenticate } from '../middleware/AuthMiddleware';
 import { validateRequest } from '../middleware/ValidateRequest';
 import LibraryController from '../controllers/LibraryController';
 import {
-    addBookRequestSchema,
-    removeBookRequestSchema,
+    createBookRequestSchema,
+    updateBookRequestSchema,
+    deleteBookRequestSchema,
     listBooksSchema,
     searchBooksSchema,
-    checkAvailabilitySchema,
+    bookIdSchema,
 } from '../services/LibraryService/validator';
 
 const router = Router();
@@ -15,9 +16,9 @@ const libraryController = new LibraryController();
 
 /**
  * @swagger
- * /books/add:
+ * /books/create:
  *   post:
- *     summary: Add a book
+ *     summary: Create a book
  *     tags: [Books]
  *     security:
  *       - BearerAuth: []
@@ -42,17 +43,78 @@ const libraryController = new LibraryController();
  *                 type: boolean
  *     responses:
  *       200:
- *         description: Successfully added a book
+ *         description: Successfully creates a book
  *       401:
  *         description: Unauthorized
  */
-router.post('/add', authenticate, validateRequest(addBookRequestSchema), libraryController.add);
+router.post('/create', authenticate, validateRequest(createBookRequestSchema), libraryController.create);
 
 /**
  * @swagger
- * /books/remove:
+ * /books/get:
+ *   get:
+ *     summary: Get book by ID
+ *     tags: [Books]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: number
+ *     responses:
+ *       200:
+ *         description: Successfully got the book
+ *       404:
+ *         description: Book not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.get('/get', authenticate, validateRequest(bookIdSchema), libraryController.read);
+
+/**
+ * @swagger
+ * /books/update:
+ *   put:
+ *     summary: Update a book
+ *     tags: [Books]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: number
+ *               title:
+ *                 type: string
+ *               author:
+ *                 type: string
+ *               year:
+ *                 type: number
+ *               isAvailable:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Successfully updated book
+ *       404:
+ *         description: Book not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.put('/update', authenticate, validateRequest(updateBookRequestSchema), libraryController.update);
+
+/**
+ * @swagger
+ * /books/delete:
  *   delete:
- *     summary: Remove a book
+ *     summary: Delete a book
  *     tags: [Books]
  *     security:
  *       - BearerAuth: []
@@ -69,11 +131,11 @@ router.post('/add', authenticate, validateRequest(addBookRequestSchema), library
  *                 type: number
  *     responses:
  *       200:
- *         description: Successfully removed a book
+ *         description: Successfully deletes a book
  *       401:
  *         description: Unauthorized
  */
-router.delete('/remove', authenticate, validateRequest(removeBookRequestSchema), libraryController.remove);
+router.delete('/delete', authenticate, validateRequest(deleteBookRequestSchema), libraryController.delete);
 
 /**
  * @swagger
@@ -175,6 +237,6 @@ router.get('/search', authenticate, validateRequest(searchBooksSchema), libraryC
  *       401:
  *         description: Unauthorized
  */
-router.get('/checkAvailability', authenticate, validateRequest(checkAvailabilitySchema), libraryController.checkAvailability);
+router.get('/checkAvailability', authenticate, validateRequest(bookIdSchema), libraryController.checkAvailability);
 
 export default router;
