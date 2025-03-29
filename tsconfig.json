@@ -9,6 +9,8 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "include": ["src/**/*"],
+  "include": [
+    "server/src/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }

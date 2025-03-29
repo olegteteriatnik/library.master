@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from '../helpers/chai';
 import { expectErrorFrom } from '../helpers/expectError';
-import * as Vault from '../../../config/vault';
-import AuthService, { initializeSecretKey } from '../../../src/services/AuthService/AuthService';
+import * as Vault from '../../../server/config/vault';
+import AuthService, { initializeSecretKey } from '../../../server/src/services/AuthService/AuthService';
 
 let sandbox: sinon.SinonSandbox;
 const secretKey = 'secretKey';

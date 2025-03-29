@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Books Manager | Library Master</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<header class="header">
+    <h1 class="header-title" data-testid="page-header">Books Manager</h1>
+    <div class="header-actions">
+        <input
+                type="text"
+                id="searchInput"
+                data-testid="search-bar"
+                placeholder="Search books..."
+        />
+        <button id="openAddBookModal" data-testid="add-book-button">Add New Book</button>
+        <button id="logoutButton" data-testid="logout-button">Logout</button>
+    </div>
+</header>
+
+<div class="booklist-container">
+    <h2 class="section-title">Books List</h2>
+
+    <table class="book-table" data-testid="book-table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Year</th>
+        </tr>
+        </thead>
+        <tbody id="bookTableBody"></tbody>
+    </table>
+
+    <div class="pagination">
+        <button id="previousPageButton" data-testid="previous-page">Previous</button>
+        <span id="currentPage" data-testid="current-page">Page 1</span>
+        <button id="nextPageButton" data-testid="next-page">Next</button>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

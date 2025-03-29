@@ -1,4 +1,4 @@
-import { startServer, startFileReader } from './server';
+import { startServer, startFileReader } from './app';
 
 async function main() {
     const mode = process.argv[2] || 'server';
