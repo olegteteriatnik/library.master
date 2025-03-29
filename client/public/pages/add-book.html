@@ -1,0 +1,39 @@
+<link rel="stylesheet" href="../css/add-book.css" />
+
+<div id="addBookModal" class="modal hidden" data-testid="add-book-modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close-button" data-testid="close-add-book-modal">&#10006;</span>
+        <h2 data-testid="add-book-title">Add New Book</h2>
+
+        <form id="addBookForm" data-testid="add-book-form">
+            <label for="newTitle">Title:</label>
+            <input
+                    type="text"
+                    id="newTitle"
+                    name="title"
+                    data-testid="add-book-title-input"
+                    required
+            />
+
+            <label for="newAuthor">Author:</label>
+            <input
+                    type="text"
+                    id="newAuthor"
+                    name="author"
+                    data-testid="add-book-author-input"
+                    required
+            />
+
+            <label for="newYear">Year:</label>
+            <input
+                    type="number"
+                    id="newYear"
+                    name="year"
+                    data-testid="add-book-year-input"
+                    required
+            />
+
+            <button type="submit" data-testid="add-book-submit-button">Add</button>
+        </form>
+    </div>
+</div>

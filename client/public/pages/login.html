@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login | Library Master</title>
+    <link rel="stylesheet" href="../css/login.css" />
+    <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+</head>
+<body>
+<div class="login-container">
+    <h1 data-testid="login-title">Log in</h1>
+
+    <form id="loginForm" data-testid="login-form">
+        <label for="username">Username:</label>
+        <input
+                type="text"
+                id="username"
+                name="username"
+                data-testid="login-username-input"
+                required
+        />
+
+        <label for="password">Password:</label>
+        <input
+                type="password"
+                id="password"
+                name="password"
+                data-testid="login-password-input"
+                required
+        />
+
+        <button type="submit" data-testid="login-submit-button">Login</button>
+    </form>
+</div>
+
+<script src="../js/login.js"></script>
+</body>
+</html>

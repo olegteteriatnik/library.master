@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import readline from 'readline';
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -13,6 +14,7 @@ async function startServer() {
     const app = express();
     const port = process.env.PORT || 3000;
     const baseApiUrl = process.env.BASE_API_URL || `http://localhost:${port}`;
+    const clientPath = path.join(process.cwd(), 'client/public');
 
     swaggerConfig.definition!.servers = [
         {
@@ -40,8 +42,19 @@ async function startServer() {
 
         app.use('/library-master-api', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
         app.use(express.json());
+
         app.use('/', authRoutes);
         app.use('/books', libraryRoutes);
+
+        app.use('/', express.static(clientPath));
+
+        app.get('/login', (req, res) => {
+            res.sendFile(path.join(clientPath, 'pages', 'login.html'));
+        });
+
+        app.get(/^\/(?!books).*/, (req, res) => {
+            res.sendFile(path.join(clientPath, 'pages', 'index.html'));
+        });
 
         const pool = await Database.getInstance();
 
