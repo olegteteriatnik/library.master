@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    document.body.style.display = 'block';
+
     const previousButton = document.getElementById('previousPageButton');
     const nextButton = document.getElementById('nextPageButton');
     const currentPageSpan = document.getElementById('currentPage');
