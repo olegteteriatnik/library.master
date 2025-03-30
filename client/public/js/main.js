@@ -1,4 +1,5 @@
 import { isTokenValid, getToken, clearTokenAndRedirect } from './utils/auth.js';
+import { initAddBookForm } from './add-book.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const token = getToken();
@@ -17,11 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentPage = 1;
     const pageSize = 10;
+    const sortBy = 'title';
     let modalLoaded = false;
 
     async function fetchBooks(page = 1) {
         try {
-            const response = await fetch(`/books/list?page=${page}&pageSize=${pageSize}`, {
+            const response = await fetch(`/books/list?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -116,6 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.classList.add('hidden');
             }
         });
+
+        initAddBookForm(token, () => fetchBooks(currentPage));
     }
 
     fetchBooks(currentPage);
