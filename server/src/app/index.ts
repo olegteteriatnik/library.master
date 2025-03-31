@@ -52,6 +52,10 @@ async function startServer() {
             res.sendFile(path.join(clientPath, 'pages', 'login.html'));
         });
 
+        app.get('/book', (req, res) => {
+            res.sendFile(path.join(clientPath, 'pages', 'book.html'));
+        });
+
         app.get(/^\/(?!books).*/, (req, res) => {
             res.sendFile(path.join(clientPath, 'pages', 'index.html'));
         });

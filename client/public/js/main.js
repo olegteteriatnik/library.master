@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const books = await response.json();
             renderBooks(books.items);
+            document.getElementById('bookListStatus').textContent = 'Books List';
             currentPageSpan.textContent = `Page ${page}`;
         } catch (err) {
             const tableBody = document.getElementById('bookTableBody');
@@ -59,7 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = document.createElement('tr');
 
             const title = document.createElement('td');
-            title.textContent = book.title;
+            const titleLink = document.createElement('a');
+            titleLink.href = `/book?id=${book.id}`;
+            titleLink.textContent = book.title;
+            titleLink.classList.add('book-link');
+            titleLink.setAttribute('data-testid', `book-link-${book.id}`);
+            title.appendChild(titleLink);
 
             const author = document.createElement('td');
             author.textContent = book.author;

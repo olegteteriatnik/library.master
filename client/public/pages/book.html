@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Book Details | Library Master</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body style="display: none">
+<header class="header">
+    <h1 class="header-title" data-testid="page-header">Books Manager</h1>
+    <div class="header-actions">
+        <button id="backToList" data-testid="back-to-list-button">Back to List</button>
+        <button id="logoutButton" data-testid="logout-button">Logout</button>
+    </div>
+</header>
+
+<div class="booklist-container">
+    <h2 id="book-title" data-testid="book-title">Loading...</h2>
+    <p id="book-author" data-testid="book-author"></p>
+    <p id="book-year" data-testid="book-year"></p>
+    <p id="book-availability" data-testid="book-availability"></p>
+</div>
+
+<script type="module" src="../js/book.js"></script>
+</body>
+</html>
