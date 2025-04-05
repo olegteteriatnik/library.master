@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #1f1f1f;">
+<head>
+    <meta charset="UTF-8" />
+    <title>Book Details | Library Master</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/book.css" />
+</head>
+<body style="display: none; background: #1f1f1f;">
+<header class="header">
+    <h1 class="header-title" data-testid="page-header">Books Manager</h1>
+    <div class="header-actions">
+        <button id="backToList" data-testid="back-to-list-button">Back to List</button>
+        <button id="logoutButton" data-testid="logout-button">Logout</button>
+    </div>
+</header>
+
+<div class="book-details">
+    <div class="book-info" id="book-info">
+        <h2 id="book-title" data-testid="book-title">Loading...</h2>
+        <p id="book-author" data-testid="book-author"></p>
+        <p id="book-year" data-testid="book-year"></p>
+        <p id="book-availability" data-testid="book-availability"></p>
+    </div>
+    <div class="edit-actions">
+        <button id="editButton" data-testid="edit-book-button">Edit</button>
+        <button id="deleteButton" data-testid="delete-book-button">Delete</button>
+    </div>
+</div>
+
+<div id="confirmModal" class="modal hidden">
+    <div class="modal-content">
+        <p>Are you sure you want to delete this book?</p>
+        <div class="modal-buttons">
+            <button id="confirmYes">Yes, delete</button>
+            <button id="confirmNo">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="../js/book.js"></script>
+
+<div id="toast" class="toast hidden">Book deleted</div>
+
+</body>
+</html>

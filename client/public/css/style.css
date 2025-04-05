@@ -103,6 +103,17 @@ button:hover {
     margin-bottom: 1.5rem;
 }
 
+.book-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.book-link:hover,
+.book-link:focus {
+    color: #bb33ff;
+}
+
 .book-table th,
 .book-table td {
     padding: 0.8rem 1rem;
@@ -112,6 +123,13 @@ button:hover {
 
 .book-table th {
     background-color: #3c3c3c;
+}
+
+button:disabled {
+    background-color: #555 !important;
+    color: #aaa !important;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .pagination {

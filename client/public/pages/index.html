@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background: #1f1f1f;">
 <head>
     <meta charset="UTF-8" />
     <title>Books Manager | Library Master</title>
     <link rel="stylesheet" href="../css/style.css" />
+    <link rel="preload" href="../css/add-book.css" as="style" />
+    <link rel="stylesheet" href="../css/add-book.css" />
 </head>
-<body>
+<body style="display:none; background: #1f1f1f;">
 <header class="header">
     <h1 class="header-title" data-testid="page-header">Books Manager</h1>
     <div class="header-actions">
@@ -21,7 +23,7 @@
 </header>
 
 <div class="booklist-container">
-    <h2 class="section-title">Books List</h2>
+    <h2 class="section-title" id="bookListStatus" data-testid="books-loading">Loading books...</h2>
 
     <table class="book-table" data-testid="book-table">
         <thead>
@@ -41,6 +43,6 @@
     </div>
 </div>
 
-<script src="../js/main.js"></script>
+<script type="module" src="../js/main.js"></script>
 </body>
 </html>
