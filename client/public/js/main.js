@@ -1,7 +1,7 @@
 import { isTokenValid, getToken, clearTokenAndRedirect, logoutUser } from './utils/auth.js';
 import { initAddBookForm } from './add-book.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const token = getToken();
     if (!token || !isTokenValid(token)) {
         clearTokenAndRedirect();
@@ -15,15 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentPageSpan = document.getElementById('currentPage');
     const addBookButton = document.getElementById('openAddBookModal');
     const logoutButton = document.getElementById('logoutButton');
-
-    let currentPage = 1;
+    const searchInput = document.getElementById('searchInput');
     const pageSize = 10;
     const sortBy = 'title';
+
+    let currentPage = 1;
     let modalLoaded = false;
+    let searchTitle = '';
 
     async function fetchBooks(page = 1) {
         try {
-            const response = await fetch(`/books/list?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}`, {
+            const url = searchTitle.trim()
+                ? `/books/search?page=${page}&pageSize=${pageSize}&title=${encodeURIComponent(searchTitle)}`
+                : `/books/list?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}`;
+
+            const response = await fetch(url, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -44,6 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
             tableBody.innerHTML = `<tr><td colspan="3" style="color:red">${err.message}</td></tr>`;
         }
     }
+
+    searchInput?.addEventListener('keydown', async (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            searchTitle = searchInput.value.trim();
+            currentPage = 1;
+            await fetchBooks(currentPage);
+        }
+    });
 
     function renderBooks(books) {
         const tableBody = document.getElementById('bookTableBody');
@@ -85,16 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    previousButton.addEventListener('click', () => {
+    previousButton.addEventListener('click', async () => {
         if (currentPage > 1) {
             currentPage--;
-            fetchBooks(currentPage);
+            await fetchBooks(currentPage);
         }
     });
 
-    nextButton.addEventListener('click', () => {
+    nextButton.addEventListener('click', async () => {
         currentPage++;
-        fetchBooks(currentPage);
+        await fetchBooks(currentPage);
     });
 
     logoutButton?.addEventListener('click', logoutUser);
@@ -129,5 +144,5 @@ document.addEventListener('DOMContentLoaded', () => {
         initAddBookForm(token, () => fetchBooks(currentPage));
     }
 
-    fetchBooks(currentPage);
+    await fetchBooks(currentPage);
 });
