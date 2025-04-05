@@ -1,4 +1,4 @@
-import { isTokenValid, getToken, clearTokenAndRedirect } from './utils/auth.js';
+import { isTokenValid, getToken, clearTokenAndRedirect, logoutUser } from './utils/auth.js';
 import { initAddBookForm } from './add-book.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -32,9 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error('Failed to fetch books');
 
             const books = await response.json();
+            const totalPages = Math.ceil(books.total / pageSize);
+
             renderBooks(books.items);
             document.getElementById('bookListStatus').textContent = 'Books List';
             currentPageSpan.textContent = `Page ${page}`;
+            previousButton.disabled = page <= 1;
+            nextButton.disabled = page >= totalPages;
         } catch (err) {
             const tableBody = document.getElementById('bookTableBody');
             tableBody.innerHTML = `<tr><td colspan="3" style="color:red">${err.message}</td></tr>`;
@@ -93,10 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchBooks(currentPage);
     });
 
-    logoutButton?.addEventListener('click', () => {
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-    });
+    logoutButton?.addEventListener('click', logoutUser);
 
     addBookButton.addEventListener('click', async () => {
         if (!modalLoaded) {

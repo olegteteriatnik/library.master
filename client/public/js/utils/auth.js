@@ -18,3 +18,8 @@ export function clearTokenAndRedirect() {
     localStorage.removeItem('token');
     window.location.href = '/login';
 }
+
+export function logoutUser() {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+}
