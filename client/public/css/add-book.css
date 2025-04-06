@@ -65,7 +65,9 @@
 }
 
 .modal-content button[type="submit"] {
-    width: 100%;
+    width: 160px;
+    display: block;
+    margin: 1.5rem auto 0;
     padding: 0.7rem;
     font-size: 1rem;
     background-color: #9b00ff;
