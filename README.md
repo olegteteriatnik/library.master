@@ -12,6 +12,25 @@ Also, it includes basic Node.js project that reads data from a file and displays
 - Secure JWT-based authentication for protected endpoints
 - Interactive Swagger UI for exploring and testing API endpoints
 
+### Client-Side Interface (Public Frontend)
+
+- Simple frontend built using vanilla HTML, CSS, and JavaScript (no framework)
+- Allows users to:
+    - Log in and manage books through a clean UI
+    - View paginated list of books
+    - Search books by title
+    - View details of a book
+    - Edit or delete a book
+    - Add a new book via modal form
+- Real-time validation and error handling with confirmation dialogs and toasts
+- Responsive layout with consistent design system
+- Protected routes — token must be present in `localStorage` to access
+
+> Note: Client-side UI is available locally at `http://localhost:3000/`
+
+> 🔗 **Live version** of the client is available at:  
+> [http://203.161.47.9:3100/](http://203.161.47.9:3100/)
+
 ### File Reader Utility
 - Command-line tool for reading and displaying content of any text-based file
 - Interactive console prompt for entering file path
