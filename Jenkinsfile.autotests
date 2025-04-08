@@ -1,0 +1,32 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Install and Run Playwright E2E Tests') {
+      steps {
+        dir('tests/e2e/playwright') {
+          sh '''
+            npm ci
+            npx playwright install --with-deps
+            npm test
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    success {
+      echo '✅ Playwright E2E tests passed!'
+    }
+    failure {
+      echo '❌ Playwright E2E tests failed.'
+    }
+  }
+}
