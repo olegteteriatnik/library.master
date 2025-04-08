@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/playwright:v1.40.0-jammy
+
+WORKDIR /tests/e2e/playwright
+
+COPY ./tests/e2e/playwright/package*.json ./
+COPY ./tests/e2e/playwright/.npmrc ./
+
+RUN npm i
+COPY ./tests/e2e/playwright .
+
+RUN npx playwright install --with-deps
+ENTRYPOINT ["npx", "playwright", "test", "--config=./configs/playwright.config.ts"]
