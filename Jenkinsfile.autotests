@@ -8,25 +8,25 @@ pipeline {
       }
     }
 
-    stage('Install and Run Playwright E2E Tests') {
+    stage('Build autotests Docker Image') {
       steps {
-        dir('tests/e2e/playwright') {
-          sh '''
-            npm ci
-            npx playwright install --with-deps
-            npm test
-          '''
-        }
+        sh 'docker build -f Dockerfile.autotests -t library.master-e2e .'
+      }
+    }
+
+    stage('Run tests') {
+      steps {
+        sh 'docker run --rm -e CI=true library.master-e2e'
       }
     }
   }
 
   post {
     success {
-      echo '✅ Playwright E2E tests passed!'
+      echo '✅ E2E tests passed!'
     }
     failure {
-      echo '❌ Playwright E2E tests failed.'
+      echo '❌ E2E tests failed.'
     }
   }
 }
