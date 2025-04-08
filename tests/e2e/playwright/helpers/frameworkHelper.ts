@@ -7,7 +7,7 @@ class FrameworkHelper {
     }
 
     public async waitUntilEnabled(locator: Locator, timeout = staticParams.timeouts.elementRender): Promise<void> {
-        const isEnabled = await locator.isEnabled();
+        const isEnabled = await locator.isEnabled({ timeout });
         if (!isEnabled) {
             throw new Error(`Element not enabled. Selector: ${locator.toString()}`);
         }
