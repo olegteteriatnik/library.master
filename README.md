@@ -38,7 +38,8 @@ Also, it includes basic Node.js project that reads data from a file and displays
 ### Quality and CI/CD
 - Modular architecture with unit-tested services
 - Mocha, Chai, and Sinon for testing
-- Integrated with Jenkins for build, test, and deploy
+- End-to-end tests implemented using Playwright
+- Integrated with Jenkins for build, E2E testing, and deployment
 - CI pipeline blocks deployment on failed tests
 
 ---
@@ -47,6 +48,23 @@ Also, it includes basic Node.js project that reads data from a file and displays
 
 - Node.js v20.x or higher
 - TypeScript
+- Playwright CLI (for running E2E tests locally)
+
+---
+
+## End-to-End Tests
+
+E2E tests are located in `tests/e2e/playwright/` and are written using [Playwright](https://playwright.dev/).  
+They simulate real user interaction in the browser and validate the logic and behavior.
+
+### Highlights
+
+- Page Object Model (POM) structure
+- Headed mode for local runs
+- Headless mode for CI (automatically applied if `CI=true`)
+- Fully integrated into Jenkins pipelines
+
+➡️ See [tests/e2e/playwright/README.md](./tests/e2e/playwright/README.md) for setup, structure, and examples.
 
 ---
 
