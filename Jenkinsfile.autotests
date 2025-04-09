@@ -33,7 +33,7 @@ pipeline {
               -e CI=true \\
               -e TESTOMATIO=$TESTOMATIO \\
               library.master-e2e \\
-              sh -c "npx playwright test ${specArg} --config=./configs/playwright.config.ts ${runIdArg}"
+              ${specArg} ${runIdArg}
             """
           }
         }
