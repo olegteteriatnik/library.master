@@ -3,7 +3,7 @@ import LoginPage from '../../pages/LoginPage';
 import texts from '../../texts';
 
 test.describe('Login page is displayed correctly', () => {
-    test('Login page is displayed.', async ({ page }) => {
+    test('@T8c30733f Login page is displayed.', async ({ page }) => {
         const loginPage = new LoginPage(page);
         await loginPage.visit();
 

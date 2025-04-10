@@ -1,6 +1,11 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig, ReporterDescription } from '@playwright/test';
 
 const isCI = !!process.env.CI;
+
+const testomatioReporter: ReporterDescription = [
+    '@testomatio/reporter/lib/adapter/playwright.js',
+    { apiKey: process.env.TESTOMATIO }
+];
 
 export default defineConfig({
     testDir: '../specs',
@@ -11,5 +16,8 @@ export default defineConfig({
             args: ['--start-maximized'],
         },
     },
-    reporter: [['list']],
+    reporter: [
+        ['list'],
+        ...(isCI ? [testomatioReporter] : [])
+    ],
 });
