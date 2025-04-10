@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   parameters {
-      string(name: 'TEST_RUN_ID', defaultValue: '', description: 'Optional: Test Run ID')
       string(name: 'SPEC_PATH', defaultValue: '', description: 'Optional: Path to specific spec file')
   }
 
@@ -26,14 +25,13 @@ pipeline {
         ]) {
           script {
             def specArg = params.SPEC_PATH ? params.SPEC_PATH : ''
-            def runIdArg = params.TEST_RUN_ID ? "--run ${params.TEST_RUN_ID}" : ''
 
             sh """
               docker run --rm \\
               -e CI=true \\
               -e TESTOMATIO=$TESTOMATIO \\
               library.master-e2e \\
-              ${specArg} ${runIdArg}
+              ${specArg}
             """
           }
         }
