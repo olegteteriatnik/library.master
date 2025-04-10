@@ -57,6 +57,17 @@ Also, it includes basic Node.js project that reads data from a file and displays
 E2E tests are located in `tests/e2e/playwright/` and are written using [Playwright](https://playwright.dev/).  
 They simulate real user interaction in the browser and validate the logic and behavior.
 
+### Test Management Integration
+
+E2E tests are integrated with [Testomatio](https://testomat.io/) for tracking and reporting.
+
+- Test cases are linked using IDs (e.g. `@T1234567`) placed at the **start of test names**
+- Results are automatically pushed to Testomatio when tests run in CI
+- To run a specific test spec via Jenkins:
+  ```bash
+  SPEC_PATH=specs/login.spec.ts
+  ```
+
 ### Highlights
 
 - Page Object Model (POM) structure

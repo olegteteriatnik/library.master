@@ -34,3 +34,36 @@ npm test
 ## Headless Mode for CI
 
 No extra setup needed — when `CI=true` is set in the environment, Playwright automatically switches to headless mode.
+
+---
+
+## Integration with Testomatio
+
+Project is integrated with [Testomatio](https://testomat.io/) — a test management system for tracking automated test cases.
+
+### How it works
+
+- Each test must include a `@Txxxxxxx` ID from Testomatio in its name.
+- Example:
+  ```ts
+  test('@T8c30733f Login page is displayed.', async () => {
+    // test steps
+  });
+  ```
+
+- During CI execution, test results are automatically reported to Testomatio using the `TESTOMATIO` API key.
+
+### Jenkins integration
+
+- Tests are run via Docker and results are pushed to Testomatio.
+- You can optionally pass a spec file path:
+  ```bash
+  SPEC_PATH=specs/login.spec.ts
+  ```
+- If no parameters are passed, all tests are run and reported.
+
+### Important
+
+- The Testomatio ID **must appear at the beginning of the test title**, without brackets:
+    - ✅ `test('@T12345 Description', () => {})`
+    - ❌ `test('[@T12345] Description', () => {})` (won’t be recognized)
