@@ -18,16 +18,53 @@ These tests validate real user interaction with the application.
 
 ## How to Run Locally
 
+Make sure you’re in the `tests/e2e/playwright/` directory and have installed dependencies:
+
 ```bash
 cd tests/e2e/playwright
 npm i
+```
 
+### Run all tests
+
+```bash
 npm test
 ```
 
-- Runs using `playwright.config.ts`
-- Browsers launch in **headed** mode for visual feedback
-- Tests live in `specs/`, configs in `configs/`
+This runs all specs in `specs/` using `configs/playwright.config.ts`.  
+Browsers launch in **headed** mode by default (unless `CI=true` is set).
+
+### Run a specific test spec
+
+```bash
+npm run test:spec -- specs/loginToLibraryMaster.spec.ts
+```
+
+Useful for debugging or focused test development.
+
+---
+
+## Environment Variables (.env)
+
+To run tests locally, create a `.env` file in `tests/e2e/playwright/` by copying the provided example:
+
+```bash
+cp .envExample .env
+```
+
+Then fill in the required values:
+
+```env
+HCP_CLIENT_ID=your-client-id
+HCP_CLIENT_SECRET=your-client-secret
+HCP_AUTH_URL=https://your-auth-url
+HCP_API_BASE_URL=https://your-api-url
+HCP_AUDIENCE=your-audience
+```
+
+These environment variables are required to fetch secrets from Vault and generate user tokens for authorization.
+
+> ✅ These are **not needed in CI**, as Jenkins injects them via credentials.
 
 ---
 

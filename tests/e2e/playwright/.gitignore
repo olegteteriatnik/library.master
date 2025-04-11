@@ -1,0 +1,17 @@
+# Node.js
+node_modules/
+dist/
+
+# Editor files
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Env files
+.env
+
+# Playwright artifacts
+test-results/
+playwright-report/
+trace.zip

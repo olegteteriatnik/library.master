@@ -6,5 +6,6 @@ export default {
     timeouts: {
         pageRender: 60_000,
         elementRender: 10_000,
+        tokenLoad: 5_000,
     },
 };
