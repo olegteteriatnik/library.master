@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   parameters {
-      string(name: 'SPEC_PATH', defaultValue: '', description: 'Optional: Path to specific spec file')
+    string(name: 'SPEC_PATH', defaultValue: '', description: 'Optional: Path to specific spec file')
   }
 
   stages {
@@ -21,28 +21,64 @@ pipeline {
     stage('Run tests') {
       steps {
         withCredentials([
-            string(credentialsId: 'TESTOMATIO', variable: 'TESTOMATIO'),
-            string(credentialsId: 'HCP_CLIENT_ID', variable: 'HCP_CLIENT_ID'),
-            string(credentialsId: 'HCP_CLIENT_SECRET', variable: 'HCP_CLIENT_SECRET'),
-            string(credentialsId: 'HCP_AUTH_URL', variable: 'HCP_AUTH_URL'),
-            string(credentialsId: 'HCP_API_BASE_URL', variable: 'HCP_API_BASE_URL'),
-            string(credentialsId: 'HCP_AUDIENCE', variable: 'HCP_AUDIENCE'),
+          string(credentialsId: 'TESTOMATIO', variable: 'TESTOMATIO'),
+          string(credentialsId: 'HCP_CLIENT_ID', variable: 'HCP_CLIENT_ID'),
+          string(credentialsId: 'HCP_CLIENT_SECRET', variable: 'HCP_CLIENT_SECRET'),
+          string(credentialsId: 'HCP_AUTH_URL', variable: 'HCP_AUTH_URL'),
+          string(credentialsId: 'HCP_API_BASE_URL', variable: 'HCP_API_BASE_URL'),
+          string(credentialsId: 'HCP_AUDIENCE', variable: 'HCP_AUDIENCE'),
         ]) {
-          script {
-            def specArg = params.SPEC_PATH ? params.SPEC_PATH : ''
+        script {
+          def specArg = params.SPEC_PATH ? params.SPEC_PATH : ''
+          def containerName = 'library-master-e2e-run'
+          def workspace = env.WORKSPACE
+          def buildUrl = env.BUILD_URL
 
-            sh """
-              docker run --rm \\
-              -e CI=true \\
-              -e TESTOMATIO=$TESTOMATIO \\
-              -e HCP_CLIENT_ID=$HCP_CLIENT_ID \\
-              -e HCP_CLIENT_SECRET=$HCP_CLIENT_SECRET \\
-              -e HCP_AUTH_URL=$HCP_AUTH_URL \\
-              -e HCP_API_BASE_URL=$HCP_API_BASE_URL \\
-              -e HCP_AUDIENCE=$HCP_AUDIENCE \\
-              library.master-e2e \\
-              ${specArg}
-            """
+          def exitCode = sh(
+            script: """
+              docker run --name ${containerName} \\
+                -e CI=true \\
+                -e TESTOMATIO=$TESTOMATIO \\
+                -e HCP_CLIENT_ID=$HCP_CLIENT_ID \\
+                -e HCP_CLIENT_SECRET=$HCP_CLIENT_SECRET \\
+                -e HCP_AUTH_URL=$HCP_AUTH_URL \\
+                -e HCP_API_BASE_URL=$HCP_API_BASE_URL \\
+                -e HCP_AUDIENCE=$HCP_AUDIENCE \\
+                library.master-e2e ${specArg}
+            """,
+            returnStatus: true
+          )
+
+          sh """
+            rm -rf ${workspace}/test-results
+            docker cp ${containerName}:/tests/e2e/playwright/test-results/. ${workspace}/test-results || true
+            docker rm ${containerName} || true
+          """
+
+          def output = sh(
+            script: """
+              if [ -d ${workspace}/test-results ]; then
+                find ${workspace}/test-results -name '*.png' | sort | uniq
+              fi
+            """,
+            returnStdout: true
+          ).trim()
+
+          if (output) {
+            def seen = [] as Set
+            output.split('\n').each { absPath ->
+              def relPath = absPath.replace("${workspace}/", "")
+              if (seen.add(relPath)) {
+                echo "[SCREENSHOT] ${buildUrl}artifact/${relPath}"
+              }
+            }
+          } else {
+            echo '[WARN] No screenshots found.'
+          }
+
+          if (exitCode != 0) {
+            error("❌ E2E tests failed. See logs and screenshots above.")
+            }
           }
         }
       }
@@ -55,6 +91,9 @@ pipeline {
     }
     failure {
       echo '❌ E2E tests failed.'
+    }
+    always {
+      archiveArtifacts artifacts: '**/test-results/**/*.png', allowEmptyArchive: true
     }
   }
 }

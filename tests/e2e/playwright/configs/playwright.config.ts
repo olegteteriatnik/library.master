@@ -8,6 +8,7 @@ const testomatioReporter: ReporterDescription = [
 ];
 
 export default defineConfig({
+    workers: 1,
     testDir: '../specs',
     use: {
         headless: isCI,
@@ -15,6 +16,7 @@ export default defineConfig({
         launchOptions: {
             args: ['--start-maximized'],
         },
+        screenshot: 'only-on-failure',
     },
     reporter: [
         ['list'],
