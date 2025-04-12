@@ -1,6 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import frameworkHelper from '../helpers/frameworkHelper';
 import staticParams from '../params/constants';
+import { UserData } from '../api/services/authApi/interfaces/UserData';
 
 export default class LoginPage {
     private readonly path = staticParams.routes.login;
@@ -41,8 +42,8 @@ export default class LoginPage {
     }
 
     public async waitUntilIsOpened(): Promise<void> {
-        await frameworkHelper.waitUntilVisible(this.area);
-        await frameworkHelper.waitUntilEnabled(this.area);
+        await frameworkHelper.waitUntilElementVisible(this.area, staticParams.timeouts.pageRender);
+        await frameworkHelper.waitUntilElementEnabled(this.area, staticParams.timeouts.pageRender);
     }
 
     public isLoginFormDisplayed(): Promise<boolean> {
@@ -71,5 +72,23 @@ export default class LoginPage {
 
     public isLoginButtonDisplayed(): Promise<boolean> {
         return this.loginButton.isVisible();
+    }
+
+    public async setUsername(username: string): Promise<void> {
+        await this.userNameInputField.fill(username);
+    }
+
+    public async setPassword(password: string): Promise<void> {
+        await this.passwordInputField.fill(password);
+    }
+
+    public async clickLoginButton(): Promise<void> {
+        await this.loginButton.click();
+    }
+
+    public async login(data: UserData): Promise<void> {
+        await this.setUsername(data.username);
+        await this.setPassword(data.password);
+        await this.clickLoginButton();
     }
 }

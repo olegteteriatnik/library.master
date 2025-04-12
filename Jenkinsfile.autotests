@@ -22,6 +22,11 @@ pipeline {
       steps {
         withCredentials([
             string(credentialsId: 'TESTOMATIO', variable: 'TESTOMATIO'),
+            string(credentialsId: 'HCP_CLIENT_ID', variable: 'HCP_CLIENT_ID'),
+            string(credentialsId: 'HCP_CLIENT_SECRET', variable: 'HCP_CLIENT_SECRET'),
+            string(credentialsId: 'HCP_AUTH_URL', variable: 'HCP_AUTH_URL'),
+            string(credentialsId: 'HCP_API_BASE_URL', variable: 'HCP_API_BASE_URL'),
+            string(credentialsId: 'HCP_AUDIENCE', variable: 'HCP_AUDIENCE'),
         ]) {
           script {
             def specArg = params.SPEC_PATH ? params.SPEC_PATH : ''
@@ -30,6 +35,11 @@ pipeline {
               docker run --rm \\
               -e CI=true \\
               -e TESTOMATIO=$TESTOMATIO \\
+              -e HCP_CLIENT_ID=$HCP_CLIENT_ID \\
+              -e HCP_CLIENT_SECRET=$HCP_CLIENT_SECRET \\
+              -e HCP_AUTH_URL=$HCP_AUTH_URL \\
+              -e HCP_API_BASE_URL=$HCP_API_BASE_URL \\
+              -e HCP_AUDIENCE=$HCP_AUDIENCE \\
               library.master-e2e \\
               ${specArg}
             """
