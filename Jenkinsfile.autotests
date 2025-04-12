@@ -36,6 +36,7 @@ pipeline {
 
           def exitCode = sh(
             script: """
+              docker rm -f ${containerName} || true
               docker run --name ${containerName} \\
                 -e CI=true \\
                 -e TESTOMATIO=$TESTOMATIO \\
