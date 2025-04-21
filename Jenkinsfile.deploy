@@ -52,6 +52,12 @@ pipeline {
         sh 'docker ps | grep ${CONTAINER_NAME} || true'
       }
     }
+
+    stage('Run E2E tests') {
+      steps {
+        build job: 'library-master/E2E', wait: true
+      }
+    }
   }
 
   post {
