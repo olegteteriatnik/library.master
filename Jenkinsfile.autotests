@@ -27,6 +27,11 @@ pipeline {
           string(credentialsId: 'HCP_AUTH_URL', variable: 'HCP_AUTH_URL'),
           string(credentialsId: 'HCP_API_BASE_URL', variable: 'HCP_API_BASE_URL'),
           string(credentialsId: 'HCP_AUDIENCE', variable: 'HCP_AUDIENCE'),
+          string(credentialsId: 'S3_ACCESS_KEY_ID', variable: 'S3_ACCESS_KEY_ID'),
+          string(credentialsId: 'S3_SECRET_ACCESS_KEY', variable: 'S3_SECRET_ACCESS_KEY'),
+          string(credentialsId: 'S3_REGION', variable: 'S3_REGION'),
+          string(credentialsId: 'S3_BUCKET', variable: 'S3_BUCKET'),
+          string(credentialsId: 'TESTOMATIO_PRIVATE_ARTIFACTS', variable: 'TESTOMATIO_PRIVATE_ARTIFACTS'),
         ]) {
         script {
           def specArg = params.SPEC_PATH ? params.SPEC_PATH : ''
@@ -45,6 +50,11 @@ pipeline {
                 -e HCP_AUTH_URL=$HCP_AUTH_URL \\
                 -e HCP_API_BASE_URL=$HCP_API_BASE_URL \\
                 -e HCP_AUDIENCE=$HCP_AUDIENCE \\
+                -e S3_ACCESS_KEY_ID=$S3_ACCESS_KEY_ID \
+                -e S3_SECRET_ACCESS_KEY=$S3_SECRET_ACCESS_KEY \
+                -e S3_REGION=$S3_REGION \
+                -e S3_BUCKET=$S3_BUCKET \
+                -e TESTOMATIO_PRIVATE_ARTIFACTS=$TESTOMATIO_PRIVATE_ARTIFACTS \
                 library.master-e2e ${specArg}
             """,
             returnStatus: true
