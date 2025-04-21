@@ -104,3 +104,11 @@ Project is integrated with [Testomatio](https://testomat.io/) — a test managem
 - The Testomatio ID **must appear at the beginning of the test title**, without brackets:
     - ✅ `test('@T12345 Description', () => {})`
     - ❌ `test('[@T12345] Description', () => {})` (won’t be recognized)
+
+### Artifacts & Screenshots
+
+- If a test **fails on CI**, Playwright captures a screenshot (and optional trace).
+- These artifacts are **automatically uploaded to an S3 bucket**.
+- Testomatio fetches them and attaches to the corresponding test in the report.
+
+> ✅ Screenshots are only uploaded when `CI=true` — local runs don’t publish anything.
