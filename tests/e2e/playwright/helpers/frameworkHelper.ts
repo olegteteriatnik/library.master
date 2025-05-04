@@ -22,6 +22,19 @@ class FrameworkHelper {
         }
     }
 
+    public async waitUntilElementHidden(locator: Locator): Promise<void> {
+        await locator.waitFor({ state: 'hidden', timeout: staticParams.timeouts.elementRender });
+    }
+
+    public async isElementHiddenAfterWait(locator: Locator): Promise<boolean> {
+        try {
+            await this.waitUntilElementHidden(locator);
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
     public async getTokenFromLocalStorage(page: Page): Promise<string> {
         await page.waitForFunction((key) => !!localStorage.getItem(key), 'token', { timeout: staticParams.timeouts.tokenLoad });
         const token = await page.evaluate((key) => localStorage.getItem(key), 'token');
@@ -31,6 +44,18 @@ class FrameworkHelper {
         }
 
         return token;
+    }
+
+    public async setUserAccessToken(page: Page, userAccessToken: string): Promise<void> {
+        await page.goto(staticParams.baseUrl);
+
+        await page.evaluate((tokenValue) => {
+            localStorage.setItem('token', tokenValue);
+        }, userAccessToken);
+    }
+
+    public async pressEnter(locator: Locator): Promise<void> {
+        await locator.press('Enter');
     }
 }
 

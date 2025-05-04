@@ -46,6 +46,10 @@ export default class LoginPage {
         await frameworkHelper.waitUntilElementEnabled(this.area, staticParams.timeouts.pageRender);
     }
 
+    public async isDisplayedAfterWait(): Promise<boolean> {
+        return frameworkHelper.isElementDisplayedAfterWait(this.area, staticParams.timeouts.pageRender);
+    }
+
     public isLoginFormDisplayed(): Promise<boolean> {
         return this.area.isVisible();
     }
