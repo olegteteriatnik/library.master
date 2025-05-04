@@ -3,6 +3,7 @@ import { getSecret } from '../configs/vault';
 import vaultConfig from '../configs/vault/config';
 import { UserData } from '../params/interfaces/UserData';
 import { DecodedToken } from '../params/interfaces/DecodedToken';
+import texts from '../texts';
 
 class CommonHelper {
     public async getUserData(): Promise<UserData> {
@@ -20,6 +21,17 @@ class CommonHelper {
         const currentTimeInSeconds = Date.now() / 1000;
 
         return expirationDate > currentTimeInSeconds;
+    }
+
+    public getRandomYear(): number {
+        const minYear = 1000;
+        const maxYear = new Date().getFullYear() - 1;
+
+        return Math.floor(Math.random() * (maxYear - minYear + 1)) + minYear;
+    }
+
+    public booleanToYesNo(value: boolean): string {
+        return value ? texts.bookDetails.availabilityValues.yes : texts.bookDetails.availabilityValues.no;
     }
 }
 

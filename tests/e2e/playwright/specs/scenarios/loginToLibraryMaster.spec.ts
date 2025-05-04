@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import LoginPage from '../pages/LoginPage';
-import BooksListPage from '../pages/BooksListPage';
-import commonHelper from '../helpers/commonHelper';
-import frameworkHelper from '../helpers/frameworkHelper';
+import LoginPage from '../../pages/LoginPage';
+import BooksListPage from '../../pages/BooksListPage';
+import commonHelper from '../../helpers/commonHelper';
+import frameworkHelper from '../../helpers/frameworkHelper';
 
 test.describe('Log in to LibraryMaster cases.', () => {
     test('@T4d74d633 It could be possible to log in to LibraryMaster.', async ({ page }) => {
