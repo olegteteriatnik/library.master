@@ -36,7 +36,7 @@ test.describe('Add new book cases.', () => {
     test('@Tb1c66bb8 It could be possible to add new book.', async () => {
         const expectedBookData = generateExpectedBookData(createdBook.id);
 
-        expect(await addBookModal.isElementHiddenAfterWait()).toBe(true);
+        expect(await addBookModal.isHiddenAfterWait()).toBe(true);
         expect(await booksListPage.isDisplayedAfterWait()).toBe(true);
         expect(createdBook).toEqual(expectedBookData);
     });

@@ -1,0 +1,21 @@
+{
+  "name": "library.master-cypress-e2e",
+  "version": "1.0.0",
+  "description": "E2E tests for library.master with Cypress",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test:open": "cypress open",
+    "test:run": "cypress run"
+  },
+  "keywords": [],
+  "author": "Oleg Teteriatnik",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^14.3.2"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0"
+  }
+}

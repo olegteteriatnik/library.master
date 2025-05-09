@@ -34,7 +34,7 @@ export default class AddBookModal {
         await frameworkHelper.waitUntilElementEnabled(this.modal);
     }
 
-    public async isElementHiddenAfterWait(): Promise<boolean> {
+    public async isHiddenAfterWait(): Promise<boolean> {
         return await frameworkHelper.isElementHiddenAfterWait(this.modal);
     }
 
