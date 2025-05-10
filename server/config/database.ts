@@ -1,32 +1,29 @@
+import { injectable } from 'inversify';
 import { Pool } from 'pg';
 import { getSecret } from './vault';
 import DbData from '../params/interfaces/DbData';
+import IDatabaseConfig from '../params/interfaces/IDatabaseConfig';
 
-class Database {
-    private static instance: Pool | null = null;
+@injectable()
+export class Database {
+    private pool: Pool | null = null;
 
-    public static async getInstance(): Promise<Pool> {
-        if (!Database.instance) {
-            try {
-                const dbData: DbData = await getSecret('database');
-                Database.instance = new Pool({
-                    user: dbData.username,
-                    host: dbData.host,
-                    database: 'library-db',
-                    password: dbData.password,
-                    port: 5432,
-                    ssl: {
-                        rejectUnauthorized: false,
-                    },
-                });
-                console.log('Database pool configured');
-            } catch (error: any) {
-                console.error('Error configuring database: ', error.message);
-                throw error;
-            }
-        }
-        return Database.instance;
+    public async connect(): Promise<Pool> {
+        if (this.pool) return this.pool;
+
+        const dbData: DbData = await getSecret('database');
+
+        const config: IDatabaseConfig = {
+            user: dbData.username,
+            host: dbData.host,
+            database: 'library-db',
+            password: dbData.password,
+            port: 5432,
+            ssl: { rejectUnauthorized: false },
+        };
+
+        this.pool = new Pool(config);
+        console.log('Database pool configured');
+        return this.pool;
     }
 }
-
-export default Database;
