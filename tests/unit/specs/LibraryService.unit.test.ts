@@ -3,7 +3,7 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from '../helpers/chai';
 import { expectErrorFrom } from '../helpers/expectError';
 import LibraryService from '../../../server/src/services/LibraryService/LibraryService';
-import Database from '../../../server/config/database';
+import { Database } from '../../../server/config/database';
 
 let sandbox: sinon.SinonSandbox;
 
@@ -31,8 +31,9 @@ describe('LibraryService', () => {
 
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
-        const result = await LibraryService.add(requestPayload);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
+        const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -61,8 +62,9 @@ describe('LibraryService', () => {
 
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
-        const result = await LibraryService.add(requestPayload);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
+        const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -91,8 +93,9 @@ describe('LibraryService', () => {
 
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
-        const result = await LibraryService.add(requestPayload);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
+        const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -121,8 +124,9 @@ describe('LibraryService', () => {
 
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
-        const result = await LibraryService.add(requestPayload);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
+        const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -146,10 +150,11 @@ describe('LibraryService', () => {
 
         const dbError = new Error('Database connection lost');
         const transportService = { query: sandbox.stub().rejects(dbError) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.add(requestPayload),
+            libraryService.add(requestPayload),
             { message: 'Database connection lost', },
         );
     });
@@ -158,8 +163,9 @@ describe('LibraryService', () => {
         const requestPayload = { id: 1 };
         const dbRow = { rowCount: 1, rows: [{}] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
-        const result = await LibraryService.remove(requestPayload);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
+        const result = await libraryService.remove(requestPayload);
 
         expect(result).to.be.undefined;
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -172,10 +178,11 @@ describe('LibraryService', () => {
         const requestPayload = { id: 999 };
         const dbRow = { rowCount: 0, rows: [] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.remove(requestPayload),
+            libraryService.remove(requestPayload),
             { message: 'Book with id 999 not found' }
         );
     });
@@ -184,10 +191,11 @@ describe('LibraryService', () => {
         const requestPayload = { id: 1 };
         const dbError = new Error('Database connection lost');
         const transportService = { query: sandbox.stub().rejects(dbError) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.remove(requestPayload),
+            libraryService.remove(requestPayload),
             { message: 'Database connection lost' }
         );
     });
@@ -208,7 +216,8 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(booksResult),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -216,7 +225,7 @@ describe('LibraryService', () => {
             items: books,
         };
 
-        const result = await LibraryService.list({});
+        const result = await libraryService.list({});
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledTwice;
@@ -242,7 +251,8 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(booksResult),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -250,7 +260,7 @@ describe('LibraryService', () => {
             items: books,
         };
 
-        const result = await LibraryService.list(requestPayload);
+        const result = await libraryService.list(requestPayload);
         const secondCallArgs = transportService.query.secondCall.args;
 
         expect(result).to.deep.equal(expectedResponse);
@@ -280,7 +290,8 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(booksResult),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             total: 10,
@@ -288,7 +299,7 @@ describe('LibraryService', () => {
             items: books,
         };
 
-        const result = await LibraryService.list(requestPayload);
+        const result = await libraryService.list(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledTwice;
@@ -306,10 +317,11 @@ describe('LibraryService', () => {
             query: sandbox.stub().resolves({rows: [{total: '0'}]}),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.list(requestPayload),
+            libraryService.list(requestPayload),
             {message: 'price is invalid sort field'},
         );
 
@@ -324,10 +336,11 @@ describe('LibraryService', () => {
 
         const dbError = new Error('Database connection lost');
         const transportService = { query: sandbox.stub().onFirstCall().rejects(dbError) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.list(requestPayload),
+            libraryService.list(requestPayload),
             { message: 'Database connection lost' },
         );
 
@@ -349,10 +362,11 @@ describe('LibraryService', () => {
                 .onSecondCall().rejects(dbError),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.list(requestPayload),
+            libraryService.list(requestPayload),
             { message: 'Failed to fetch books' },
         );
 
@@ -378,7 +392,8 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(booksResult),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -386,7 +401,7 @@ describe('LibraryService', () => {
             items: books,
         };
 
-        const result = await LibraryService.search(requestPayload);
+        const result = await libraryService.search(requestPayload);
         const secondCallArgs = transportService.query.secondCall.args;
 
         expect(result).to.deep.equal(expectedResponse);
@@ -426,7 +441,8 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(booksResult),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             total: 1,
@@ -434,7 +450,7 @@ describe('LibraryService', () => {
             items: books,
         };
 
-        const result = await LibraryService.search(requestPayload);
+        const result = await libraryService.search(requestPayload);
         const secondCallArgs = transportService.query.secondCall.args;
 
         expect(result).to.deep.equal(expectedResponse);
@@ -465,7 +481,8 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(booksResult),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -473,7 +490,7 @@ describe('LibraryService', () => {
             items: books,
         };
 
-        const result = await LibraryService.search({});
+        const result = await libraryService.search({});
         const secondCallArgs = transportService.query.secondCall.args;
 
         expect(result).to.deep.equal(expectedResponse);
@@ -496,7 +513,8 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(booksResult),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             total: 0,
@@ -504,7 +522,7 @@ describe('LibraryService', () => {
             items: [],
         };
 
-        const result = await LibraryService.search(requestPayload);
+        const result = await libraryService.search(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledTwice;
@@ -526,10 +544,11 @@ describe('LibraryService', () => {
             query: sandbox.stub().onFirstCall().rejects(dbError),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.search(requestPayload),
+            libraryService.search(requestPayload),
             { message: 'Database connection lost' },
         );
 
@@ -550,10 +569,11 @@ describe('LibraryService', () => {
                 .onSecondCall().rejects(dbError),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.search(requestPayload),
+            libraryService.search(requestPayload),
             { message: 'Failed to fetch books' },
         );
 
@@ -564,14 +584,15 @@ describe('LibraryService', () => {
         const bookId = 1;
         const dbRow = { rows: [{ isAvailable: true }] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             id: bookId,
             isAvailable: true,
         };
 
-        const result = await LibraryService.checkAvailability(bookId);
+        const result = await libraryService.checkAvailability(bookId);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -584,14 +605,15 @@ describe('LibraryService', () => {
         const bookId = 2;
         const dbRow = { rows: [{ isAvailable: false }] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         const expectedResponse = {
             id: bookId,
             isAvailable: false,
         };
 
-        const result = await LibraryService.checkAvailability(bookId);
+        const result = await libraryService.checkAvailability(bookId);
 
         expect(result).to.deep.equal(expectedResponse);
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -604,10 +626,11 @@ describe('LibraryService', () => {
         const bookId = 999;
         const dbRow = { rows: [] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.checkAvailability(bookId),
+            libraryService.checkAvailability(bookId),
             { message: `Book with id ${bookId} not found.` }
         );
 
@@ -621,10 +644,11 @@ describe('LibraryService', () => {
         const bookId = 1;
         const dbError = new Error('Database connection failed');
         const transportService = { query: sandbox.stub().rejects(dbError) };
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.checkAvailability(bookId),
+            libraryService.checkAvailability(bookId),
             { message: 'Database connection failed' }
         );
 
@@ -647,9 +671,10 @@ describe('LibraryService', () => {
         const dbRow = { rows: [expectedBook] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
-        const result = await LibraryService.getById(bookId);
+        const result = await libraryService.getById(bookId);
 
         expect(result).to.deep.equal(expectedBook);
         expect(transportService.query).to.have.been.calledWithMatch(
@@ -663,10 +688,11 @@ describe('LibraryService', () => {
         const dbRow = { rows: [] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.getById(bookId),
+            libraryService.getById(bookId),
             { message: `Book with id ${bookId} not found` }
         );
 
@@ -681,10 +707,11 @@ describe('LibraryService', () => {
         const dbError = new Error('Database connection lost');
         const transportService = { query: sandbox.stub().rejects(dbError) };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.getById(bookId),
+            libraryService.getById(bookId),
             { message: 'Database connection lost' }
         );
 
@@ -719,9 +746,10 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(dbRow),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
-        const result = await LibraryService.update({
+        const result = await libraryService.update({
             id: bookId,
             author: updatedAuthor,
         });
@@ -760,9 +788,10 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(dbRow),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
-        const result = await LibraryService.update({
+        const result = await libraryService.update({
             id: bookId,
             isAvailable: false,
         });
@@ -803,9 +832,10 @@ describe('LibraryService', () => {
                 .onSecondCall().resolves(dbRow),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
-        const result = await LibraryService.update(updatePayload);
+        const result = await libraryService.update(updatePayload);
 
         expect(result).to.deep.equal(updatePayload);
         expect(transportService.query.secondCall.args[1]).to.deep.equal([
@@ -824,10 +854,11 @@ describe('LibraryService', () => {
             query: sandbox.stub().resolves({ rows: [] }),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.update({ id: bookId, title: 'New Title' }),
+            libraryService.update({ id: bookId, title: 'New Title' }),
             { message: `Book with id ${bookId} not found` }
         );
 
@@ -856,10 +887,11 @@ describe('LibraryService', () => {
                 .onSecondCall().rejects(dbError),
         };
 
-        sandbox.stub(Database, 'getInstance').resolves(transportService as any);
+        const dbMock = { connect: sandbox.stub().resolves(transportService) };
+        const libraryService = new LibraryService(dbMock as any);
 
         await expectErrorFrom(
-            LibraryService.update({ id: bookId, year: 2024 }),
+            libraryService.update({ id: bookId, year: 2024 }),
             { message: 'Update failed' }
         );
 

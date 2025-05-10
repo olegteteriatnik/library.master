@@ -1,4 +1,6 @@
-import Database from '../../../config/database';
+import { injectable, inject } from 'inversify';
+import Types from '../../../params/constants/types';
+import { Database } from '../../../config/database';
 import { CreateBookParams } from '../../interfaces/CreateBookParams';
 import { BookEntity } from '../../interfaces/BookEntity';
 import { DeleteBookParams } from '../../interfaces/DeleteBookParams';
@@ -8,10 +10,13 @@ import { SearchBooksParams } from '../../interfaces/SearchBooksParams';
 import { CheckAvailabilityResponse } from '../../interfaces/CheckAvailabilityResponse';
 import { UpdateBookParams } from '../../interfaces/UpdateBookParams';
 
+@injectable()
 export default class LibraryService {
-    public static async add(data: CreateBookParams): Promise<BookEntity> {
+    constructor(@inject(Types.Database) private db: Database) {}
+
+    public async add(data: CreateBookParams): Promise<BookEntity> {
         const { title, author, year, isAvailable } = data;
-        const pool = await Database.getInstance();
+        const pool = await this.db.connect();
         const query = `
             INSERT INTO books (title, author, year, "isAvailable")
             VALUES ($1, $2, $3, $4)
@@ -22,8 +27,8 @@ export default class LibraryService {
         return result.rows[0];
     }
 
-    public static async getById(id: number): Promise<BookEntity> {
-        const pool = await Database.getInstance();
+    public async getById(id: number): Promise<BookEntity> {
+        const pool = await this.db.connect();
 
         const query = `
         SELECT * FROM books WHERE id = $1;
@@ -38,9 +43,9 @@ export default class LibraryService {
         return result.rows[0] as BookEntity;
     }
 
-    public static async update(data: UpdateBookParams): Promise<BookEntity> {
+    public async update(data: UpdateBookParams): Promise<BookEntity> {
         const { id, title, author, year, isAvailable } = data;
-        const pool = await Database.getInstance();
+        const pool = await this.db.connect();
         const existingBook = await this.getById(id);
         const newTitle = title ?? existingBook.title;
         const newAuthor = author ?? existingBook.author;
@@ -61,8 +66,8 @@ export default class LibraryService {
         return result.rows[0] as BookEntity;
     }
 
-    public static async remove(data: DeleteBookParams): Promise<void> {
-        const pool = await Database.getInstance();
+    public async remove(data: DeleteBookParams): Promise<void> {
+        const pool = await this.db.connect();
         const query = `
             DELETE FROM books
             WHERE id = $1;
@@ -75,8 +80,8 @@ export default class LibraryService {
         }
     }
 
-    public static async list(data: ListBooksParams): Promise<ListBooksResponse> {
-        const pool = await Database.getInstance();
+    public async list(data: ListBooksParams): Promise<ListBooksResponse> {
+        const pool = await this.db.connect();
         const page = data.page ?? 1;
         const pageSize = data.pageSize ?? 10;
 
@@ -110,8 +115,8 @@ export default class LibraryService {
         };
     }
 
-    public static async search(data: SearchBooksParams): Promise<ListBooksResponse> {
-        const pool = await Database.getInstance();
+    public async search(data: SearchBooksParams): Promise<ListBooksResponse> {
+        const pool = await this.db.connect();
         const page = data.page ?? 1;
         const pageSize = data.pageSize ?? 10;
 
@@ -164,8 +169,8 @@ export default class LibraryService {
         }
     }
 
-    public static async checkAvailability(id: number): Promise<CheckAvailabilityResponse> {
-        const pool = await Database.getInstance();
+    public async checkAvailability(id: number): Promise<CheckAvailabilityResponse> {
+        const pool = await this.db.connect();
 
         const query = `
             SELECT "isAvailable" FROM books WHERE id = $1;

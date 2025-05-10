@@ -4,11 +4,13 @@ import readline from 'readline';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import swaggerConfig from '../../config/swaggerConfig';
-import Database from '../../config/database';
+import container from '../container/applicationContainer';
+import Types from '../../params/constants/types';
+import { Database } from '../../config/database';
 import authRoutes from '../routes/AuthRoutes';
 import libraryRoutes from '../routes/LibraryRoutes';
 import FileReader from '../services/FileReader/FileReader';
-import { initializeSecretKey } from '../services/AuthService/AuthService';
+import { initializeSecretKey } from '../services/AuthService/authSecretInit';
 
 async function startServer() {
     const app = express();
@@ -60,7 +62,8 @@ async function startServer() {
             res.sendFile(path.join(clientPath, 'pages', 'index.html'));
         });
 
-        const pool = await Database.getInstance();
+        const db = container.get<Database>(Types.Database);
+        const pool = await db.connect();
 
         pool.query('SELECT NOW()', (err: any, res: any) => {
             if (err) {

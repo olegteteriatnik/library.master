@@ -1,26 +1,30 @@
+import { injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
-import { getSecret } from '../../../config/vault';
 
-let SECRET_KEY: string;
+const TOKEN_EXPIRATION = '8h';
 
-export async function initializeSecretKey() {
-    SECRET_KEY = (await getSecret('authKey')).key;
-
-    if (!SECRET_KEY) {
-        throw new Error('SECRET_KEY is missing or invalid');
-    }
-}
-
-const TOKEN_EXPIRATION = '1h';
-
+@injectable()
 export default class AuthService {
-    static generateToken(payload: object): string {
-        return jwt.sign(payload, SECRET_KEY, { expiresIn: TOKEN_EXPIRATION });
+    private secretKey: string | undefined;
+
+    public setSecretKey(secret: string) {
+        this.secretKey = secret;
     }
 
-    static verifyToken(token: string): any {
+    public generateToken(payload: object): string {
+        if (!this.secretKey) {
+            throw new Error('SECRET_KEY not initialized');
+        }
+
+        return jwt.sign(payload, this.secretKey, { expiresIn: TOKEN_EXPIRATION });
+    }
+
+    public verifyToken(token: string): any {
+        if (!this.secretKey) {
+            throw new Error('SECRET_KEY not initialized');
+        }
         try {
-            return jwt.verify(token, SECRET_KEY);
+            return jwt.verify(token, this.secretKey);
         } catch (error) {
             throw new Error('Invalid or expired token');
         }
