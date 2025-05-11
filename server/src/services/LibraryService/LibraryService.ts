@@ -1,6 +1,7 @@
 import { injectable, inject } from 'inversify';
 import Types from '../../../params/constants/types';
 import { Database } from '../../../config/database';
+import { BookFactory } from '../../factories/BookFactory/BookFactory';
 import { CreateBookParams } from '../../interfaces/CreateBookParams';
 import { BookEntity } from '../../interfaces/BookEntity';
 import { DeleteBookParams } from '../../interfaces/DeleteBookParams';
@@ -15,14 +16,15 @@ export default class LibraryService {
     constructor(@inject(Types.Database) private db: Database) {}
 
     public async add(data: CreateBookParams): Promise<BookEntity> {
-        const { title, author, year, isAvailable } = data;
         const pool = await this.db.connect();
+        const book = BookFactory.create(data);
+        const values = book.toDbValues();
         const query = `
-            INSERT INTO books (title, author, year, "isAvailable")
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO books (title, author, year, "isAvailable", type)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
         `;
-        const values = [title, author, year, isAvailable ?? true];
+
         const result = await pool.query(query, values);
         return result.rows[0];
     }
@@ -44,22 +46,23 @@ export default class LibraryService {
     }
 
     public async update(data: UpdateBookParams): Promise<BookEntity> {
-        const { id, title, author, year, isAvailable } = data;
+        const { id, title, author, year, isAvailable, type } = data;
         const pool = await this.db.connect();
         const existingBook = await this.getById(id);
         const newTitle = title ?? existingBook.title;
         const newAuthor = author ?? existingBook.author;
         const newYear = year ?? existingBook.year;
         const newAvailability = isAvailable ?? existingBook.isAvailable;
+        const newType = type ?? existingBook.type;
 
         const query = `
         UPDATE books
-        SET title = $1, author = $2, year = $3, "isAvailable" = $4
-        WHERE id = $5
+        SET title = $1, author = $2, year = $3, "isAvailable" = $4, type = $5
+        WHERE id = $6
         RETURNING *;
     `;
 
-        const values = [newTitle, newAuthor, newYear, newAvailability, id];
+        const values = [newTitle, newAuthor, newYear, newAvailability, newType, id];
 
         const result = await pool.query(query, values);
 

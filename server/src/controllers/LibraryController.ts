@@ -12,8 +12,8 @@ const libraryService = container.get<LibraryService>(Types.LibraryService);
 export default class LibraryController {
     public async create(req: Request, res: Response): Promise<void> {
         try {
-            const { title, author, year, isAvailable } = req.body as CreateBookParams;
-            const newBook = await libraryService.add({ title, author, year, isAvailable });
+            const { title, author, year, isAvailable, type } = req.body as CreateBookParams;
+            const newBook = await libraryService.add({ title, author, year, isAvailable, type });
             res.status(200).json(newBook);
         } catch (error: any) {
             console.error('Error adding book: ', error.message);
@@ -38,7 +38,7 @@ export default class LibraryController {
 
     public async update(req: Request, res: Response): Promise<void> {
         try {
-            const { id, title, author, year, isAvailable } = req.body;
+            const { id, title, author, year, isAvailable, type } = req.body;
 
             const updatedBook = await libraryService.update({
                 id: Number(id),
@@ -46,6 +46,7 @@ export default class LibraryController {
                 author,
                 year,
                 isAvailable,
+                type,
             });
 
             res.status(200).json(updatedBook);

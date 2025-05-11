@@ -1,6 +1,7 @@
 import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
 import { BookEntity } from '../../api/services/booksApi/interfaces/BookEntity';
 import { BooksList } from '../../api/services/booksApi/interfaces/BooksList';
+import { BookType } from '../../api/services/booksApi/interfaces/BookType';
 
 const createBookPayload: CreateBookPayload = {
     title: `API. Find Book by id Title ${new Date(Date.now()).toISOString()}`,
@@ -15,6 +16,7 @@ function generateBookDataResult(id: number): BookEntity {
         author: createBookPayload.author,
         year: createBookPayload.year,
         isAvailable: true,
+        type: BookType.printed,
     };
 }
 

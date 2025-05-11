@@ -1,10 +1,12 @@
 import Joi from 'joi';
+import { BookType } from '../../interfaces/BookType';
 
 export const createBookRequestSchema = Joi.object({
     title: Joi.string().min(1).required(),
-    author: Joi.string().min(2).required(),
+    author: Joi.when('type', { is: BookType.audiobook, then: Joi.string().min(2).optional(), otherwise: Joi.string().min(2).required() }),
     year: Joi.number().integer().min(0).required(),
     isAvailable: Joi.boolean().optional().default(false),
+    type: Joi.string().valid(...Object.values(BookType)).optional().default(BookType.printed),
 });
 
 export const bookIdSchema = Joi.object({
@@ -17,7 +19,8 @@ export const updateBookRequestSchema = Joi.object({
     author: Joi.string().min(2).optional(),
     year: Joi.number().integer().min(0).optional(),
     isAvailable: Joi.boolean().optional(),
-}).or('title', 'author', 'year', 'isAvailable');
+    type: Joi.string().valid(...Object.values(BookType)).optional(),
+}).or('title', 'author', 'year', 'isAvailable', 'type');
 
 export const deleteBookRequestSchema = Joi.object({
     id: Joi.number().integer().min(1).required(),

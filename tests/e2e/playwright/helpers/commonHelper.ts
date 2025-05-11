@@ -33,6 +33,11 @@ class CommonHelper {
     public booleanToYesNo(value: boolean): string {
         return value ? texts.bookDetails.availabilityValues.yes : texts.bookDetails.availabilityValues.no;
     }
+
+    public enumToRegex(enumObject: Record<string, string>): RegExp {
+        const values = Object.values(enumObject).join('|');
+        return new RegExp(`^(${values})$`);
+    }
 }
 
 export default new CommonHelper();

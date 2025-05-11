@@ -1,4 +1,5 @@
 import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
+import { BookType } from '../../api/services/booksApi/interfaces/BookType';
 import commonHelper from '../../helpers/commonHelper';
 
 const createBookPayload: CreateBookPayload = {
@@ -17,6 +18,7 @@ function generateUpdateBookPayloadAndExpectedResult(id: number) {
     return {
         id,
         isAvailable: false,
+        type: BookType.printed,
         ...updatedBookFields,
     };
 }

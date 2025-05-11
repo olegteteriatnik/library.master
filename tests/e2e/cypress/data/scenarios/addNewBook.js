@@ -1,3 +1,5 @@
+import BookType from '../../params/constants/bookTypeEnum';
+
 const bookData = {
     title: `Add Book Title ${new Date(Date.now()).toISOString()}`,
     author: `Add Book Author ${new Date(Date.now()).toISOString()}`,
@@ -11,6 +13,7 @@ function generateExpectedBookData(id) {
         author: bookData.author,
         year: bookData.year,
         isAvailable: true,
+        type: BookType.printed,
     };
 }
 
