@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
+import { BookType } from '../../api/services/booksApi/interfaces/BookType';
 
 const createBookPayload: CreateBookPayload = {
     title: `API. Create Book Title ${new Date(Date.now()).toISOString()}`,
@@ -13,6 +14,7 @@ const expectedCreateBookResponse = {
     author: createBookPayload.author,
     year: createBookPayload.year,
     isAvailable: true,
+    type: BookType.printed,
 };
 
 export default {

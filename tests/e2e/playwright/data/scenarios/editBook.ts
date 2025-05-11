@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
+import { BookType } from '../../api/services/booksApi/interfaces/BookType';
 import commonHelper from '../../helpers/commonHelper';
 
 const createBookPayload: CreateBookPayload = {
@@ -17,6 +18,7 @@ const updateBookData = {
 
 const expectedUpdatedBookData = {
     id: expect.any(Number),
+    type: BookType.printed,
     ...updateBookData,
 };
 

@@ -3,7 +3,8 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from '../helpers/chai';
 import { expectErrorFrom } from '../helpers/expectError';
 import LibraryService from '../../../server/src/services/LibraryService/LibraryService';
-import { Database } from '../../../server/config/database';
+import { BookFactory } from '../../../server/src/factories/BookFactory/BookFactory';
+import { BookType } from '../../../server/src/interfaces/BookType';
 
 let sandbox: sinon.SinonSandbox;
 
@@ -22,6 +23,7 @@ describe('LibraryService', () => {
             author: 'Author Name',
             year: 2025,
             isAvailable: true,
+            type: BookType.printed,
         };
 
         const expectedResponse = {
@@ -43,6 +45,7 @@ describe('LibraryService', () => {
                 requestPayload.author,
                 requestPayload.year,
                 requestPayload.isAvailable,
+                requestPayload.type,
             ],
         );
     });
@@ -58,6 +61,7 @@ describe('LibraryService', () => {
             id: 2,
             ...requestPayload,
             isAvailable: true,
+            type: BookType.printed,
         };
 
         const dbRow = { rows: [expectedResponse] };
@@ -74,6 +78,7 @@ describe('LibraryService', () => {
                 requestPayload.author,
                 requestPayload.year,
                 true,
+                BookType.printed,
             ],
         );
     });
@@ -84,6 +89,7 @@ describe('LibraryService', () => {
             author: 'Author Name',
             year: 2025,
             isAvailable: false,
+            type: BookType.printed,
         };
 
         const expectedResponse = {
@@ -105,6 +111,7 @@ describe('LibraryService', () => {
                 requestPayload.author,
                 requestPayload.year,
                 false,
+                requestPayload.type,
             ],
         );
     });
@@ -115,6 +122,7 @@ describe('LibraryService', () => {
             author: '',
             year: 0,
             isAvailable: true,
+            type: BookType.printed,
         };
 
         const expectedResponse = {
@@ -136,6 +144,7 @@ describe('LibraryService', () => {
                 requestPayload.author,
                 requestPayload.year,
                 requestPayload.isAvailable,
+                requestPayload.type,
             ],
         );
     });
@@ -729,6 +738,7 @@ describe('LibraryService', () => {
             author: 'Old Author',
             year: 2000,
             isAvailable: true,
+            type: BookType.printed,
         };
 
         const updatedAuthor = 'New Author';
@@ -761,6 +771,7 @@ describe('LibraryService', () => {
             updatedAuthor,
             existingBook.year,
             existingBook.isAvailable,
+            existingBook.type,
             bookId,
         ]);
     });
@@ -773,6 +784,7 @@ describe('LibraryService', () => {
             author: 'Author',
             year: 2010,
             isAvailable: true,
+            type: BookType.printed,
         };
 
         const expectedResult = {
@@ -802,6 +814,7 @@ describe('LibraryService', () => {
             existingBook.author,
             existingBook.year,
             false,
+            existingBook.type,
             bookId,
         ]);
     });
@@ -814,6 +827,7 @@ describe('LibraryService', () => {
             author: 'Original Author',
             year: 1999,
             isAvailable: false,
+            type: BookType.printed,
         };
 
         const updatePayload = {
@@ -822,6 +836,7 @@ describe('LibraryService', () => {
             author: 'Updated Author',
             year: 2025,
             isAvailable: true,
+            type: BookType.audiobook,
         };
 
         const dbRow = { rows: [updatePayload] };
@@ -843,6 +858,7 @@ describe('LibraryService', () => {
             updatePayload.author,
             updatePayload.year,
             updatePayload.isAvailable,
+            updatePayload.type,
             bookId,
         ]);
     });
@@ -896,5 +912,82 @@ describe('LibraryService', () => {
         );
 
         expect(transportService.query).to.have.been.calledTwice;
+    });
+
+    it('book factory. should create a PrintedBook with correct db values', () => {
+        const book = BookFactory.create({
+            title: 'Printed Title',
+            author: 'Printed Author',
+            year: 2020,
+            type: BookType.printed,
+            isAvailable: false,
+        });
+
+        expect(book.getType()).to.equal(BookType.printed);
+        expect(book.getAvailability()).to.be.false;
+        expect(book.toDbValues()).to.deep.equal([
+            'Printed Title',
+            'Printed Author',
+            2020,
+            false,
+            'printed',
+        ]);
+    });
+
+    it('book factory. should throw for PrintedBook without author', () => {
+        expect(() =>
+            BookFactory.create({
+                title: 'No Author Book',
+                year: 2020,
+                type: BookType.printed,
+            } as any)
+        ).to.throw('PrintedBook must have an author');
+    });
+
+    it('book factory. should create an EBook with default availability', () => {
+        const book = BookFactory.create({
+            title: 'E-Title',
+            author: 'E-Author',
+            year: 2022,
+            type: BookType.ebook,
+        });
+
+        expect(book.getType()).to.equal(BookType.ebook);
+        expect(book.getAvailability()).to.be.true;
+        expect(book.toDbValues()).to.deep.equal([
+            'E-Title',
+            'E-Author',
+            2022,
+            true,
+            'ebook',
+        ]);
+    });
+
+    it('book factory. should throw for EBook without author', () => {
+        expect(() =>
+            BookFactory.create({
+                title: 'E-Book No Author',
+                year: 2022,
+                type: BookType.ebook,
+            } as any)
+        ).to.throw('EBook must have an author');
+    });
+
+    it('book factory. should create an AudioBook and use fallback author if not provided', () => {
+        const book = BookFactory.create({
+            title: 'Audio Title',
+            year: 2021,
+            type: BookType.audiobook,
+        });
+
+        expect(book.getType()).to.equal(BookType.audiobook);
+        expect(book.getAuthor()).to.equal('Narrated version');
+        expect(book.toDbValues()).to.deep.equal([
+            'Audio Title',
+            'Narrated version',
+            2021,
+            true,
+            'audiobook',
+        ]);
     });
 });

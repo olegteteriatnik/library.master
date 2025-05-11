@@ -41,6 +41,9 @@ const libraryController = new LibraryController();
  *                 type: number
  *               isAvailable:
  *                 type: boolean
+ *               type:
+ *                 type: string
+ *                 enum: [printed, ebook, audiobook]
  *     responses:
  *       200:
  *         description: Successfully creates a book
@@ -100,6 +103,9 @@ router.get('/get', authenticate, validateRequest(bookIdSchema), libraryControlle
  *                 type: number
  *               isAvailable:
  *                 type: boolean
+ *               type:
+ *                 type: string
+ *                 enum: [printed, ebook, audiobook]
  *     responses:
  *       200:
  *         description: Successfully updated book

@@ -1,6 +1,7 @@
 import { LibraryMasterApi } from '../../api/libraryMasterApi';
 import apiHelper from '../../helpers/apiHelper';
 import data from '../../data/api/createBook';
+import BookTypeEnum from '../../params/constants/bookTypeEnum';
 
 const libraryMasterApi = new LibraryMasterApi();
 const { createBookPayload } = data;
@@ -25,5 +26,6 @@ describe('Book entity create cases.', () => {
         expect(createBookResult.author).to.equal(createBookPayload.author);
         expect(createBookResult.year).to.equal(createBookPayload.year);
         expect(createBookResult.isAvailable).to.be.true;
+        expect(createBookResult.type).to.equal(BookTypeEnum.printed);
     });
 });
