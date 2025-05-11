@@ -10,10 +10,14 @@ import { ListBooksResponse } from '../../interfaces/ListBooksResponse';
 import { SearchBooksParams } from '../../interfaces/SearchBooksParams';
 import { CheckAvailabilityResponse } from '../../interfaces/CheckAvailabilityResponse';
 import { UpdateBookParams } from '../../interfaces/UpdateBookParams';
+import EventManagerService from '../EventManagerService/EventManagerService';
 
 @injectable()
 export default class LibraryService {
-    constructor(@inject(Types.Database) private db: Database) {}
+    constructor(
+        @inject(Types.Database) private db: Database,
+        @inject(Types.EventManagerService) private eventManagerService: EventManagerService,
+    ) {}
 
     public async add(data: CreateBookParams): Promise<BookEntity> {
         const pool = await this.db.connect();
@@ -26,7 +30,9 @@ export default class LibraryService {
         `;
 
         const result = await pool.query(query, values);
-        return result.rows[0];
+        const createdBook = result.rows[0];
+        this.eventManagerService.notify('bookCreated', createdBook);
+        return createdBook;
     }
 
     public async getById(id: number): Promise<BookEntity> {
@@ -66,7 +72,9 @@ export default class LibraryService {
 
         const result = await pool.query(query, values);
 
-        return result.rows[0] as BookEntity;
+        const updatedBook = result.rows[0];
+        this.eventManagerService.notify('bookUpdated', updatedBook);
+        return updatedBook as BookEntity;
     }
 
     public async remove(data: DeleteBookParams): Promise<void> {
@@ -81,6 +89,8 @@ export default class LibraryService {
         if (result.rowCount === 0) {
             throw new Error(`Book with id ${data.id} not found`);
         }
+
+        this.eventManagerService.notify('bookDeleted', { id: data.id });
     }
 
     public async list(data: ListBooksParams): Promise<ListBooksResponse> {

@@ -11,6 +11,7 @@ import authRoutes from '../routes/AuthRoutes';
 import libraryRoutes from '../routes/LibraryRoutes';
 import FileReader from '../services/FileReader/FileReader';
 import { initializeSecretKey } from '../services/AuthService/authSecretInit';
+import { initializeObservers } from './observers';
 
 async function startServer() {
     const app = express();
@@ -40,6 +41,7 @@ async function startServer() {
     try {
         console.log('Initializing AuthService...');
         await initializeSecretKey();
+        initializeObservers();
         console.log('AuthService initialized successfully.');
 
         app.use('/library-master-api', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
