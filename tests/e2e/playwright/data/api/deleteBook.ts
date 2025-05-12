@@ -1,10 +1,11 @@
-import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
+import { BookPrototype } from '../../prototypes/BookPrototype';
 
-const createBookPayload: CreateBookPayload = {
-    title: `API. Delete Book Title ${new Date(Date.now()).toISOString()}`,
-    author: `API. Delete Book Author ${new Date(Date.now()).toISOString()}`,
-    year: new Date().getFullYear(),
+const bookData = {
+    title: 'API. Delete Book Title',
+    author: 'API. Delete Book Author',
 };
+
+const createBookPayload = new BookPrototype(bookData);
 
 export default {
     createBookPayload,
