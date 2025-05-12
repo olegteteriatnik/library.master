@@ -1,12 +1,13 @@
-import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
+import { BookPrototype } from '../../prototypes/BookPrototype';
 import { BookEntity } from '../../api/services/booksApi/interfaces/BookEntity';
 import { BookType } from '../../api/services/booksApi/interfaces/BookType';
 
-const createBookPayload: CreateBookPayload = {
-    title: `API. Get Book Title ${new Date(Date.now()).toISOString()}`,
-    author: `API. Get Book Author ${new Date(Date.now()).toISOString()}`,
-    year: new Date().getFullYear(),
+const bookData = {
+    title: 'API. Get Book Title',
+    author: 'API. Get Book Author',
 };
+
+const createBookPayload = new BookPrototype(bookData);
 
 function generateExpectedGetBookResponse(id: number): BookEntity {
     return {

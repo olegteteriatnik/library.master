@@ -1,12 +1,13 @@
 import { expect } from '@playwright/test';
-import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
+import { BookPrototype } from '../../prototypes/BookPrototype';
 import { BookType } from '../../api/services/booksApi/interfaces/BookType';
 
-const createBookPayload: CreateBookPayload = {
-    title: `API. Create Book Title ${new Date(Date.now()).toISOString()}`,
-    author: `API. Create Book Author ${new Date(Date.now()).toISOString()}`,
-    year: new Date().getFullYear(),
+const bookData = {
+    title: 'API. Create Book Title',
+    author: 'API. Create Book Author',
 };
+
+const createBookPayload = new BookPrototype(bookData);
 
 const expectedCreateBookResponse = {
     id: expect.any(Number),

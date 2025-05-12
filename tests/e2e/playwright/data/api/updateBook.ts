@@ -1,23 +1,25 @@
-import { CreateBookPayload } from '../../api/services/booksApi/interfaces/CreateBookPayload';
+import { BookPrototype } from '../../prototypes/BookPrototype';
 import { BookType } from '../../api/services/booksApi/interfaces/BookType';
 import commonHelper from '../../helpers/commonHelper';
 
-const createBookPayload: CreateBookPayload = {
-    title: `API. Update Book Title ${new Date(Date.now()).toISOString()}`,
-    author: `API. Update Book Author ${new Date(Date.now()).toISOString()}`,
-    year: new Date().getFullYear(),
+const initialBookData = {
+    title: 'API. Update Book Title',
+    author: 'API. Update Book Author',
 };
 
-const updatedBookFields = {
-    title: `API. Updated result Book Title ${new Date(Date.now()).toISOString()}`,
-    author: `API. Updated result Book Author ${new Date(Date.now()).toISOString()}`,
+const updateBookData = {
+    title: 'API. Updated result Book Title',
+    author: 'API. Updated result Book Author',
     year: commonHelper.getRandomYear(),
+    isAvailable: false,
 };
+
+const createBookPayload = new BookPrototype(initialBookData);
+const updatedBookFields = new BookPrototype(updateBookData);
 
 function generateUpdateBookPayloadAndExpectedResult(id: number) {
     return {
         id,
-        isAvailable: false,
         type: BookType.printed,
         ...updatedBookFields,
     };

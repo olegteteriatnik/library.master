@@ -57,6 +57,9 @@ Library Master applies several key software design patterns to ensure a clean, e
 - **Observer**  
   Implements an event-driven approach where components (e.g., logging or audit subscribers) react to lifecycle events such as `bookCreated`, `bookUpdated`, or `bookDeleted` without tight coupling.
 
+- **Prototype**
+  Used primarily in tests to create book payloads by cloning pre-defined templates (BookPrototype), enabling consistent, timestamped data without redundant object construction logic.
+
 These patterns contribute to the project's scalability and separation of concerns, making the codebase easier to reason about and evolve.
 
 ---
