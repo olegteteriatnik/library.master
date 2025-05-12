@@ -34,7 +34,8 @@ describe('LibraryService', () => {
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
         const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
@@ -67,7 +68,8 @@ describe('LibraryService', () => {
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
         const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
@@ -100,7 +102,8 @@ describe('LibraryService', () => {
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
         const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
@@ -133,7 +136,8 @@ describe('LibraryService', () => {
         const dbRow = { rows: [expectedResponse] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
         const result = await libraryService.add(requestPayload);
 
         expect(result).to.deep.equal(expectedResponse);
@@ -160,7 +164,8 @@ describe('LibraryService', () => {
         const dbError = new Error('Database connection lost');
         const transportService = { query: sandbox.stub().rejects(dbError) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.add(requestPayload),
@@ -173,7 +178,8 @@ describe('LibraryService', () => {
         const dbRow = { rowCount: 1, rows: [{}] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
         const result = await libraryService.remove(requestPayload);
 
         expect(result).to.be.undefined;
@@ -188,7 +194,8 @@ describe('LibraryService', () => {
         const dbRow = { rowCount: 0, rows: [] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.remove(requestPayload),
@@ -201,7 +208,8 @@ describe('LibraryService', () => {
         const dbError = new Error('Database connection lost');
         const transportService = { query: sandbox.stub().rejects(dbError) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.remove(requestPayload),
@@ -226,7 +234,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -261,7 +270,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -300,7 +310,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             total: 10,
@@ -327,7 +338,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.list(requestPayload),
@@ -346,7 +358,8 @@ describe('LibraryService', () => {
         const dbError = new Error('Database connection lost');
         const transportService = { query: sandbox.stub().onFirstCall().rejects(dbError) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.list(requestPayload),
@@ -372,7 +385,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.list(requestPayload),
@@ -402,7 +416,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -451,7 +466,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             total: 1,
@@ -491,7 +507,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             total: 2,
@@ -523,7 +540,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             total: 0,
@@ -554,7 +572,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.search(requestPayload),
@@ -579,7 +598,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.search(requestPayload),
@@ -594,7 +614,8 @@ describe('LibraryService', () => {
         const dbRow = { rows: [{ isAvailable: true }] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             id: bookId,
@@ -615,7 +636,8 @@ describe('LibraryService', () => {
         const dbRow = { rows: [{ isAvailable: false }] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const expectedResponse = {
             id: bookId,
@@ -636,7 +658,8 @@ describe('LibraryService', () => {
         const dbRow = { rows: [] };
         const transportService = { query: sandbox.stub().resolves(dbRow) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.checkAvailability(bookId),
@@ -654,7 +677,8 @@ describe('LibraryService', () => {
         const dbError = new Error('Database connection failed');
         const transportService = { query: sandbox.stub().rejects(dbError) };
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.checkAvailability(bookId),
@@ -681,7 +705,8 @@ describe('LibraryService', () => {
         const transportService = { query: sandbox.stub().resolves(dbRow) };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const result = await libraryService.getById(bookId);
 
@@ -698,7 +723,8 @@ describe('LibraryService', () => {
         const transportService = { query: sandbox.stub().resolves(dbRow) };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.getById(bookId),
@@ -717,7 +743,8 @@ describe('LibraryService', () => {
         const transportService = { query: sandbox.stub().rejects(dbError) };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.getById(bookId),
@@ -757,7 +784,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const result = await libraryService.update({
             id: bookId,
@@ -801,7 +829,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const result = await libraryService.update({
             id: bookId,
@@ -848,7 +877,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         const result = await libraryService.update(updatePayload);
 
@@ -871,7 +901,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.update({ id: bookId, title: 'New Title' }),
@@ -904,7 +935,8 @@ describe('LibraryService', () => {
         };
 
         const dbMock = { connect: sandbox.stub().resolves(transportService) };
-        const libraryService = new LibraryService(dbMock as any);
+        const eventManagerServiceMock = { notify: sandbox.stub() };
+        const libraryService = new LibraryService(dbMock as any, eventManagerServiceMock as any);
 
         await expectErrorFrom(
             libraryService.update({ id: bookId, year: 2024 }),

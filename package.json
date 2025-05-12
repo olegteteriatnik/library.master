@@ -43,6 +43,8 @@
     "reflect-metadata": "^0.2.2",
     "sinon": "^19.0.4",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.17.0",
+    "winston-cloudwatch": "^6.3.0"
   }
 }
