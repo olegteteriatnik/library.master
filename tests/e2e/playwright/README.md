@@ -107,8 +107,9 @@ Project is integrated with [Testomatio](https://testomat.io/) — a test managem
 
 ### Artifacts & Screenshots
 
-- If a test **fails on CI**, Playwright captures a screenshot (and optional trace).
-- These artifacts are **automatically uploaded to an S3 bucket**.
-- Testomatio fetches them and attaches to the corresponding test in the report.
+- If a test **fails on CI**, Playwright captures a screenshot and a trace.
+- These artifacts are **automatically uploaded to an Amazon S3 bucket**.
+- Testomatio fetches the screenshots from S3 and attaches them to the corresponding test in the report.
+- File names and paths are generated based on test UID and CI build metadata for traceability.
 
 > ✅ Screenshots are only uploaded when `CI=true` — local runs don’t publish anything.

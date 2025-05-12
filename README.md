@@ -44,6 +44,23 @@ Also, it includes basic Node.js project that reads data from a file and displays
 
 ---
 
+## Design Patterns Used
+
+Library Master applies several key software design patterns to ensure a clean, extensible, and maintainable architecture:
+
+- **Singleton**  
+  Ensures that shared services like the database connector is instantiated only once and reused across the application lifecycle.
+
+- **Factory**  
+  Abstracts the creation of different types of `Book` entities, allowing flexible instantiation logic depending on book category or context.
+
+- **Observer**  
+  Implements an event-driven approach where components (e.g., logging or audit subscribers) react to lifecycle events such as `bookCreated`, `bookUpdated`, or `bookDeleted` without tight coupling.
+
+These patterns contribute to the project's scalability and separation of concerns, making the codebase easier to reason about and evolve.
+
+---
+
 ## Requirements
 
 - Node.js v20.x or higher
@@ -163,6 +180,21 @@ To create a new unit test:
 2. Use describe and it blocks from Mocha
 3. Use chai.expect for assertions
 4. Use sinon for mocking and stubbing external dependencies
+
+---
+
+## Infrastructure
+
+Library Master is deployed in a cloud environment using AWS and CI/CD tooling:
+
+- **Amazon RDS (PostgreSQL)**  
+  The backend uses a managed PostgreSQL instance for storing books and user data. Database connectivity is securely configured via environment variables and Jenkins credentials.
+
+- **AWS-Based Logging**  
+  Application events, including book lifecycle operations and system-level events, are pushed to centralized AWS logging (e.g., CloudWatch) for observability and debugging in production.
+
+- **CI/CD Integration**  
+  Jenkins pipelines handle the build and deployment processes, automatically running unit and E2E tests before shipping. Secrets and configuration values are injected through secure Jenkins Credentials.
 
 ---
 
