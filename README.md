@@ -65,6 +65,12 @@ Library Master applies several key software design patterns to ensure a clean, e
   This allows additional behaviors (such as logging, event filtering, or future auditing) to be injected without modifying the original implementation.  
   The proxy is registered via dependency injection and replaces the direct usage of the event manager, making the substitution seamless.
 
+- **Adapter**  
+  Used to abstract differences between local and CI test execution environments.  
+  The `ExecutionContext` interface defines a contract for accessing environment-specific configuration such as `headless` mode, reporters, and CI awareness.  
+  Implementations like `CIExecutionContext` and `LocalExecutionContext` adapt environment variables to the Playwright configuration interface, improving modularity, testability, and readability.  
+  This pattern ensures that `playwright.config.ts` remains clean and declarative, delegating conditional logic to the adapter layer.
+
 These patterns contribute to the project's scalability and separation of concerns, making the codebase easier to reason about and evolve.
 
 ---
