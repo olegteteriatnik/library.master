@@ -3,4 +3,5 @@ export default {
     LibraryService: Symbol.for('LibraryService'),
     AuthService: Symbol.for('AuthService'),
     EventManagerService: Symbol.for('EventManagerService'),
+    EventManagerServiceInterface: Symbol.for('EventManagerServiceInterface'),
 };
