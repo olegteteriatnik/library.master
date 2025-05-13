@@ -1,25 +1,18 @@
-import { defineConfig, ReporterDescription } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
+import { getExecutionContext } from './environment/getExecutionContext';
 
-const isCI = !!process.env.CI;
-
-const testomatioReporter: ReporterDescription = [
-    '@testomatio/reporter/lib/adapter/playwright.js',
-    { apiKey: process.env.TESTOMATIO }
-];
+const context = getExecutionContext();
 
 export default defineConfig({
     workers: 1,
     testDir: '../specs',
     use: {
-        headless: isCI,
+        headless: context.isHeadless(),
         viewport: null,
         launchOptions: {
             args: ['--start-maximized'],
         },
         screenshot: 'only-on-failure',
     },
-    reporter: [
-        ['list'],
-        ...(isCI ? [testomatioReporter] : [])
-    ],
+    reporter: context.getReporters(),
 });
