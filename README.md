@@ -60,6 +60,11 @@ Library Master applies several key software design patterns to ensure a clean, e
 - **Prototype**
   Used primarily in tests to create book payloads by cloning pre-defined templates (BookPrototype), enabling consistent, timestamped data without redundant object construction logic.
 
+- **Proxy**  
+  Wraps the `EventManagerService` with a proxy that transparently intercepts method calls.  
+  This allows additional behaviors (such as logging, event filtering, or future auditing) to be injected without modifying the original implementation.  
+  The proxy is registered via dependency injection and replaces the direct usage of the event manager, making the substitution seamless.
+
 These patterns contribute to the project's scalability and separation of concerns, making the codebase easier to reason about and evolve.
 
 ---
