@@ -5,6 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const logger = createLogger({
     level: 'info',
+    silent: !isProduction,
     format: format.combine(
         format.timestamp(),
         format.printf(({ timestamp, level, message, ...meta }) => {

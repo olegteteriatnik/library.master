@@ -71,6 +71,12 @@ Library Master applies several key software design patterns to ensure a clean, e
   Implementations like `CIExecutionContext` and `LocalExecutionContext` adapt environment variables to the Playwright configuration interface, improving modularity, testability, and readability.  
   This pattern ensures that `playwright.config.ts` remains clean and declarative, delegating conditional logic to the adapter layer.
 
+- **Decorator**  
+  The `LibraryServiceTimingDecorator` wraps the core `LibraryService` to transparently measure and log response times for all book-related operations (e.g. `add`, `getById`, `search`).  
+  This behavior is injected dynamically using InversifyJS and does not modify the original service.  
+  In production, logs are sent to AWS CloudWatch; in local development, logging is silenced entirely.  
+  This pattern supports separation of concerns, runtime behavior injection, and easy future extension (e.g., adding retry logic or metrics collection).
+
 These patterns contribute to the project's scalability and separation of concerns, making the codebase easier to reason about and evolve.
 
 ---
