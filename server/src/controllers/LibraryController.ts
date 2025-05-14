@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import container from '../container/applicationContainer';
 import Types from '../../params/constants/types';
-import LibraryService from '../services/LibraryService/LibraryService';
+import { LibraryService as LibraryServiceInterface } from '../interfaces/LibraryService';
 import { CreateBookParams } from '../interfaces/CreateBookParams';
 import { DeleteBookParams } from '../interfaces/DeleteBookParams';
 import { ListBooksParams } from '../interfaces/ListBooksParams';
 import { SearchBooksParams } from '../interfaces/SearchBooksParams';
 
-const libraryService = container.get<LibraryService>(Types.LibraryService);
+const libraryService = container.get<LibraryServiceInterface>(Types.LibraryServiceInterface);
 
 export default class LibraryController {
     public async create(req: Request, res: Response): Promise<void> {
