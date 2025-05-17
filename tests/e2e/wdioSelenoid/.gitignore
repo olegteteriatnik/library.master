@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+dist/
+
+# Editor files
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Env files
+.env
+
+# Selenoid generated browsers
+browsers.json
+
+# WebDriverIO artifacts
+allure-report/
+allure-results/
+errorShots/
+logs/

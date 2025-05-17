@@ -1,0 +1,30 @@
+{
+  "name": "library.master-wdio-selenoid-e2e",
+  "version": "1.0.0",
+  "description": "E2E tests for library.master with WebDriverIO + Selenoid",
+  "main": "index.js",
+  "scripts": {
+    "test": "wdio run wdio.conf.ts",
+    "test:spec": "wdio run wdio.conf.ts --spec",
+    "wdio": "wdio run ./wdio.conf.ts",
+    "generate:browsers": "ts-node generateBrowsers.ts",
+    "start:selenoid": "./scripts/start-selenoid.sh"
+  },
+  "keywords": [],
+  "author": "Oleg Teteriatnik",
+  "license": "ISC",
+  "devDependencies": {
+    "@wdio/cli": "^9.13.0",
+    "@wdio/local-runner": "^9.13.0",
+    "@wdio/mocha-framework": "^9.13.0",
+    "@wdio/spec-reporter": "^9.13.0",
+    "@wdio/types": "^9.13.0",
+    "chromedriver": "^136.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0"
+  }
+}
