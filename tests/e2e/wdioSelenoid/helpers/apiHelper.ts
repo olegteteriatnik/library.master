@@ -1,16 +1,20 @@
-import { Page } from '@playwright/test';
 import { LibraryMasterApi } from '../api/libraryMasterApi';
 import { UserData } from '../api/services/authApi/interfaces/UserData';
 import { BookEntity } from '../api/services/booksApi/interfaces/BookEntity';
-import frameworkHelper from './frameworkHelper';
 import staticParams from '../params/constants';
 
 const libraryMasterApi = new LibraryMasterApi();
 
 class ApiHelper {
-    public async signInToLibraryMasterApp(page: Page, userData: UserData): Promise<string> {
+    public async signInToLibraryMasterApp(userData: UserData): Promise<string> {
         const token = await libraryMasterApi.authApi.generateUserToken(userData);
-        await frameworkHelper.setUserAccessToken(page, token);
+
+        await browser.url(staticParams.baseUrl);
+        await browser.execute((tokenValue) => {
+            localStorage.setItem('token', tokenValue);
+        }, token);
+
+        await browser.refresh();
 
         return token;
     }

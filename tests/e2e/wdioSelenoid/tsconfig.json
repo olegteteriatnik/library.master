@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "lib": ["es2022", "dom"],
+        "types": [
+            "node",
+            "expect-webdriverio",
+            "@wdio/mocha-framework"
+        ],
+        "strict": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
+        "isolatedModules": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "esModuleInterop": true
+    },
+    "include": [
+        "wdio.conf.ts",
+        "specs/**/*.ts",
+        "generateBrowsers.ts",
+        "pages/**/*.ts",
+        "node_modules/@wdio/globals/types.d.ts"
+    ]
+}
