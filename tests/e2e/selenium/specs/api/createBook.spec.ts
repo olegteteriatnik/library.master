@@ -1,4 +1,3 @@
-import { expect } from 'expect-webdriverio';
 import commonHelper from '../../helpers/commonHelper';
 import { LibraryMasterApi } from '../../api/libraryMasterApi';
 import { BookEntity } from '../../api/services/booksApi/interfaces/BookEntity';
@@ -11,17 +10,17 @@ let userAccessToken: string;
 let createBookResult: BookEntity;
 
 describe('Book entity create cases.', () => {
-    before(async () => {
+    beforeAll(async () => {
         const userData = await commonHelper.getUserData();
         userAccessToken = await libraryMasterApi.authApi.generateUserToken(userData);
         createBookResult = await libraryMasterApi.booksApi.create(userAccessToken, createBookPayload);
     });
 
-    after(async () => {
+    afterAll(async () => {
         await libraryMasterApi.booksApi.delete(userAccessToken, createBookResult.id);
     });
 
-    it('Book entity could be created.', async () => {
+    test('Book entity could be created.', async () => {
         expect(createBookResult).toStrictEqual(expectedCreateBookResponse);
     });
 });
