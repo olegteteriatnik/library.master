@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+dist/
+
+# Editor/IDE files
+.idea/
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Env files
+.env
+
+# Jest artifacts
+coverage/
+test-results/
+debug.log
+
+# Selenium artifacts
+selenium-debug.log
+screenshots/
+
+# Local browser drivers
+chromedriver.log
+geckodriver.log
