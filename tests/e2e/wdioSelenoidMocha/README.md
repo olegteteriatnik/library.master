@@ -21,7 +21,7 @@ These tests validate real user interaction with the backend APIs and the UI.
 Install dependencies:
 
 ```bash
-cd tests/e2e/wdioSelenoid
+cd tests/e2e/wdioSelenoidMocha
 npm install
 ```
 
@@ -106,7 +106,7 @@ docker stop selenoid selenoid-ui && docker rm selenoid selenoid-ui
 
 ## Environment Variables
 
-To run tests locally, create a `.env` file in `tests/e2e/wdioSelenoid/` by copying the provided example:
+To run tests locally, create a `.env` file in `tests/e2e/wdioSelenoidMocha/` by copying the provided example:
 
 ```bash
 cp .envExample .env

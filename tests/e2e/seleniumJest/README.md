@@ -23,7 +23,7 @@ These tests validate real user interaction via browser automation, simulating re
 Install dependencies:
 
 ```bash
-cd tests/e2e/selenium
+cd tests/e2e/seleniumJest
 npm install
 ```
 
@@ -42,7 +42,7 @@ This will run all `.spec.ts` files under `specs/**`.
 You can run a specific test file, e.g. `addNewBook.spec.ts`:
 
 ```bash
-npm test -- tests/e2e/selenium/specs/scenarios/addNewBook.spec.ts
+npm test -- tests/e2e/seleniumJest/specs/scenarios/addNewBook.spec.ts
 ```
 
 This runs only the selected file using Jest CLI.
@@ -51,7 +51,7 @@ This runs only the selected file using Jest CLI.
 
 ## Environment Variables
 
-To run tests locally, create a `.env` file in `tests/e2e/selenium/` by copying the example:
+To run tests locally, create a `.env` file in `tests/e2e/seleniumJest/` by copying the example:
 
 ```bash
 cp .envExample .env
