@@ -5,7 +5,7 @@ export function isTokenValid(token) {
         const currentTime = Math.floor(Date.now() / 1000);
 
         return decodedPayload.exp && decodedPayload.exp > currentTime;
-    } catch (err) {
+    } catch (_) {
         return false;
     }
 }

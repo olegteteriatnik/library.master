@@ -6,6 +6,7 @@ import { CreateBookParams } from '../interfaces/CreateBookParams';
 import { DeleteBookParams } from '../interfaces/DeleteBookParams';
 import { ListBooksParams } from '../interfaces/ListBooksParams';
 import { SearchBooksParams } from '../interfaces/SearchBooksParams';
+import { handleError } from '../utils/handleError';
 
 const libraryService = container.get<LibraryServiceInterface>(Types.LibraryServiceInterface);
 
@@ -15,9 +16,9 @@ export default class LibraryController {
             const { title, author, year, isAvailable, type } = req.body as CreateBookParams;
             const newBook = await libraryService.add({ title, author, year, isAvailable, type });
             res.status(200).json(newBook);
-        } catch (error: any) {
-            console.error('Error adding book: ', error.message);
-            res.status(500).json({ message: 'Failed to add book' });
+        } catch (error) {
+            const { status, message } = handleError(error, 'Failed to create book');
+            res.status(status).json({ message });
         }
     }
 
@@ -27,12 +28,9 @@ export default class LibraryController {
 
             const book = await libraryService.getById(Number(id));
             res.status(200).json(book);
-        } catch (error: any) {
-            if (error.message.includes('not found')) {
-                res.status(404).json({ message: error.message });
-            } else {
-                res.status(500).json({ message: error.message });
-            }
+        } catch (error) {
+            const { status, message } = handleError(error, 'Failed to read book');
+            res.status(status).json({ message });
         }
     }
 
@@ -50,12 +48,9 @@ export default class LibraryController {
             });
 
             res.status(200).json(updatedBook);
-        } catch (error: any) {
-            if (error.message.includes('not found')) {
-                res.status(404).json({ message: error.message });
-            } else {
-                res.status(500).json({ message: error.message });
-            }
+        } catch (error) {
+            const { status, message } = handleError(error, 'Failed to update book');
+            res.status(status).json({ message });
         }
     }
 
@@ -64,12 +59,9 @@ export default class LibraryController {
             const { id } = req.body as DeleteBookParams;
             const removedBook = await libraryService.remove({ id });
             res.status(200).json(removedBook);
-        } catch (error: any) {
-            if (error.message.includes('not found')) {
-                res.status(404).json({ message: error.message });
-            } else {
-                res.status(500).json({ message: error.message });
-            }
+        } catch (error) {
+            const { status, message } = handleError(error, 'Failed to delete book');
+            res.status(status).json({ message });
         }
     }
 
@@ -78,8 +70,9 @@ export default class LibraryController {
             const { page, pageSize, sortBy } = req.query as unknown as ListBooksParams;
             const booksList = await libraryService.list({ page, pageSize, sortBy });
             res.status(200).json(booksList);
-        } catch (error: any) {
-            res.status(500).json({ message: error.message });
+        } catch (error) {
+            const { status, message } = handleError(error, 'Failed to get list of books');
+            res.status(status).json({ message });
         }
     }
 
@@ -88,8 +81,9 @@ export default class LibraryController {
             const { page, pageSize, title, author, year, isAvailable } = req.query as unknown as SearchBooksParams;
             const foundBooks = await libraryService.search({ page, pageSize, title, author, year, isAvailable });
             res.status(200).json(foundBooks);
-        } catch (error: any) {
-            res.status(500).json({ message: error.message });
+        } catch (error) {
+            const { status, message } = handleError(error, 'Failed to search book');
+            res.status(status).json({ message });
         }
     }
 
@@ -98,12 +92,9 @@ export default class LibraryController {
             const { id } = req.query;
             const availabilityResult = await libraryService.checkAvailability(Number(id));
             res.status(200).json(availabilityResult);
-        } catch (error: any) {
-            if (error.message.includes('not found')) {
-                res.status(404).json({ message: error.message });
-            } else {
-                res.status(500).json({ message: error.message });
-            }
+        } catch (error) {
+            const { status, message } = handleError(error, 'Failed to check book availability');
+            res.status(status).json({ message });
         }
     }
 }

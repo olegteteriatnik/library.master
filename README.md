@@ -42,6 +42,15 @@ Also, it includes basic Node.js project that reads data from a file and displays
 - Integrated with Jenkins for build, E2E testing, and deployment
 - CI pipeline blocks deployment on failed tests
 
+### Code Quality & Conventions
+
+- **ESLint** with TypeScript, Cypress, and Chai integration for enforcing consistent code style and error detection.
+- Custom rule sets for:
+    - Server-side Node.js code
+    - Frontend (client/public)
+    - Unit tests and E2E tests (Playwright + Cypress)
+- All modules (including tests and Cypress specs) are fully linted and pass static analysis.
+
 ---
 
 ## Design Patterns Used
@@ -91,8 +100,28 @@ These patterns contribute to the project's scalability and separation of concern
 
 ## End-to-End Tests
 
-E2E tests are located in `tests/e2e/playwright/` and are written using [Playwright](https://playwright.dev/).  
-They simulate real user interaction in the browser and validate the logic and behavior.
+End-to-end (E2E) tests are located in the `tests/e2e/` directory and are designed to simulate real user interaction with the system.
+
+Library Master supports **multiple E2E frameworks**, each placed in a dedicated subdirectory:
+
+| Directory               | Framework             | Purpose                                                              |
+|------------------------|-----------------------|----------------------------------------------------------------------|
+| `playwright/`          | [Playwright](https://playwright.dev/) | **Main test suite**. Covers all key flows with full integration      |
+| `cypress/`             | Cypress               | Contains a small selection of representative E2E tests implemented using Cypress                 |
+| `wdioSelenoidMocha/`   | WebDriverIO + Selenoid| Contains a few demonstration tests with UI interaction and Selenoid-based VNC inspection       |
+| `seleniumJest/`        | Selenium + Jest       | Contains basic examples using raw Selenium WebDriver with Jest for experimental coverage      |
+
+### Structure
+
+- All suites follow the **Page Object Model** (POM) for consistency and maintainability.
+- **Playwright** is the **primary** and most complete suite — all scenarios are implemented there.
+- The other frameworks serve as **reference implementations**, showcasing how core scenarios (like book creation or list validation) can be ported and executed in different environments.
+
+### Running
+
+Each suite has its own configuration and can be run independently.
+
+See individual `README.md` files inside each subdirectory (e.g. `tests/e2e/playwright/README.md`) for installation and usage details.
 
 ### Test Management Integration
 
@@ -144,6 +173,34 @@ E2E tests are integrated with [Testomatio](https://testomat.io/) for tracking an
 
 ---
 
+## Versioning & Releases
+
+Library Master uses **Semantic Versioning (SemVer)** and automates version bumping and changelog generation using [`standard-version`](https://github.com/conventional-changelog/standard-version).
+
+### Workflow
+
+- Version bump and changelog generation is performed via:
+
+  ```bash
+  npm run release
+  ```
+
+This:
+- Parses commits with the Conventional Commits format
+- Automatically bumps version in package.json
+- Generates or updates CHANGELOG.md
+- Creates a Git tag
+
+The release process is intended to be run manually from the CLI before deployment, or automated in future CI flows.
+
+Commit Format
+To enable changelog generation, commit messages should follow Conventional Commits, for example:
+feat(): support JWT token refresh
+fix(): fix incorrect year sorting on book list
+chore(): clean up unused dependencies
+
+
+---
 ## Run
 
 To start the Library Master and use endpoints:

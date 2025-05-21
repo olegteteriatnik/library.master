@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmNo = document.getElementById('confirmNo');
     const logoutButton = document.getElementById('logoutButton');
 
-    let currentBook;
-
     const fetchAndRenderBook = () => {
         fetch(`/books/get?id=${bookId}`, {
             headers: {
@@ -27,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then((book) => {
-                currentBook = book;
                 document.body.style.display = 'block';
                 renderBookDetails(book);
 

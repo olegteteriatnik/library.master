@@ -3,6 +3,7 @@ import container from '../container/applicationContainer';
 import Types from '../../params/constants/types';
 import AuthService from '../services/AuthService/AuthService';
 import { AuthenticatedRequest } from './interfaces/AuthenticatedRequest';
+import { handleError } from '../utils/handleError';
 
 const authService = container.get<AuthService>(Types.AuthService);
 
@@ -17,7 +18,8 @@ export const authenticate = (req: AuthenticatedRequest, res: Response, next: Nex
     try {
         req.user = authService.verifyToken(token);
         next();
-    } catch (error: any) {
-        res.status(401).json({ message: error.message });
+    } catch (error) {
+        const { status, message } = handleError(error, 'Failed to authenticate.');
+        res.status(status).json({ message });
     }
 };
