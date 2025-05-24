@@ -39,7 +39,7 @@ pipeline {
         GITHUB_TOKEN = credentials('GITHUB_TOKEN')
       }
       steps {
-        sh 'npx semantic-release'
+        sh 'docker run --rm -e GITHUB_TOKEN=${GITHUB_TOKEN} ${IMAGE_NAME}:${IMAGE_TAG} npx semantic-release'
       }
     }
   }
