@@ -1,5 +1,6 @@
 import axios from 'axios';
 import staticParams from '../../../params/constants';
+import httpHelper from '../../../helpers/httpHelper';
 import { BooksApiService as BooksApiServiceInterface } from './interfaces/BooksApiService';
 import { SearchPayload } from './interfaces/SearchPayload';
 import { BooksList } from './interfaces/BooksList';
@@ -57,8 +58,8 @@ export class BooksApiService implements BooksApiServiceInterface {
             );
 
             return response.data;
-        } catch (error: any) {
-            if (error.response.status === 404) {
+        } catch (error: unknown) {
+            if (httpHelper.isAxiosErrorWithStatus(error, 404)) {
                 return null;
             }
             throw error;

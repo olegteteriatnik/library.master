@@ -1,6 +1,8 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import config from './config';
+import { Secret as SecretInterface } from '../../params/interfaces/Secret';
+import { handleError } from '../../src/utils/handleError';
 
 dotenv.config();
 
@@ -66,7 +68,7 @@ export async function getSecret(key: keyof typeof config) {
             }
         );
 
-        const secretData = secretResponse.data.secrets.find((secret: any) => secret.name === key);
+        const secretData = secretResponse.data.secrets.find((secret: SecretInterface) => secret.name === key);
         const secretValue = JSON.parse(secretData.static_version.value);
 
         if (!secretData) {
@@ -74,8 +76,9 @@ export async function getSecret(key: keyof typeof config) {
         }
 
         return secretValue;
-    } catch (err: any) {
-        console.error(`Error fetching secret "${config[key]}`, err.message);
+    } catch (err) {
+        const { message } = handleError(err, `Error fetching secret "${config[key]}"`);
+        console.error(message);
         throw err;
     }
 }

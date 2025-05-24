@@ -2,7 +2,7 @@ import { expect } from './chai';
 
 interface ExpectedError {
     message?: string;
-    type?: new (...args: any[]) => Error;
+    type?: ErrorConstructor;
 }
 
 export async function expectErrorFrom(

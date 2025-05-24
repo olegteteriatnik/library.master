@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { Secret } from '../../params/interfaces/Secret';
 
 dotenv.config();
 
@@ -49,7 +50,7 @@ export async function getSecret(key: string) {
             }
         );
 
-        const secretData = secretResponse.data.secrets.find((secret: any) => secret.name === key);
+        const secretData = secretResponse.data.secrets.find((secret: Secret) => secret.name === key);
         const secretValue = JSON.parse(secretData.static_version.value);
 
         if (!secretData) {
@@ -57,8 +58,12 @@ export async function getSecret(key: string) {
         }
 
         return secretValue;
-    } catch (err: any) {
-        console.error(`Error fetching secret "${key}`, err.message);
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            console.error(`Error fetching secret "${key}":`, err.message);
+        } else {
+            console.error(`Unknown error fetching secret "${key}":`, err);
+        }
         throw err;
     }
 }

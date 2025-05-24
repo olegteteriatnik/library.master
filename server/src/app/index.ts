@@ -12,6 +12,7 @@ import libraryRoutes from '../routes/LibraryRoutes';
 import FileReader from '../services/FileReader/FileReader';
 import { initializeSecretKey } from '../services/AuthService/authSecretInit';
 import { initializeObservers } from './observers';
+import { handleError } from '../utils/handleError';
 
 async function startServer() {
     const app = express();
@@ -67,20 +68,20 @@ async function startServer() {
         const db = container.get<Database>(Types.Database);
         const pool = await db.connect();
 
-        pool.query('SELECT NOW()', (err: any, res: any) => {
-            if (err) {
-                console.error('Error connecting to the database:', err.message);
-                process.exit(1);
-            } else {
-                console.log('Database connected:', res.rows);
-
-                app.listen(port, () => {
-                    console.log(`Server is running on http://localhost: ${port}`);
-                });
-            }
-        });
-    } catch (error: any) {
-        console.error('Failed to start server: ', error.message);
+        try {
+            const result = await pool.query('SELECT NOW()');
+            console.log('Database connected:', result.rows);
+            app.listen(port, () => {
+                console.log(`Server is running`);
+            });
+        } catch (err) {
+            const { message } = handleError(err, 'Error connecting to the database');
+            console.error(message);
+            process.exit(1);
+        }
+    } catch (error) {
+        const { message } = handleError(error, 'Failed to start server');
+        console.error(message);
         process.exit(1);
     }
 }
@@ -112,12 +113,9 @@ async function startFileReader() {
             const content = await fileReader.readFile(filePath);
             console.log('File data: ', content);
         }
-    } catch (error: any) {
-        if (error.message.includes('ENOENT')) {
-            console.error(`Error: File not found at path ${filePath}.`)
-        } else {
-            console.error('Error by file reading: ', error.message);
-        }
+    } catch (error) {
+        const { message } = handleError(error, 'Error reading file');
+        console.error(message);
     }
 }
 

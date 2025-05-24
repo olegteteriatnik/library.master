@@ -13,7 +13,7 @@ export default class EventManagerServiceProxy implements EventManagerServiceInte
         this.realService.subscribe(eventType, observer);
     }
 
-    notify<T = any>(eventType: string, payload: T) {
+    notify<T = unknown>(eventType: string, payload: T) {
         this.realService.notify(eventType, payload);
     }
 }

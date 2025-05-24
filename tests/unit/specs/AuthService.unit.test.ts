@@ -51,7 +51,7 @@ describe('AuthService', () => {
         const invalidToken = 'invalidToken';
 
         await expectErrorFrom(
-            () => authService.verifyToken(invalidToken),
+            () => Promise.resolve(authService.verifyToken(invalidToken)),
             { message: 'Invalid or expired token' },
         );
     });

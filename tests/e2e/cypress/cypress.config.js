@@ -4,7 +4,7 @@ import staticParams from './params/constants/index';
 
 export default defineConfig({
   e2e: {
-    setupNodeEvents(on, config) {
+    setupNodeEvents(on, _config) {
       on('task', { getSecret });
     },
     specPattern: 'specs/**/*.cy.{js,ts}',

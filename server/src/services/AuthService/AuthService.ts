@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
+import { Token } from '../../../params/interfaces/Token';
 
 const TOKEN_EXPIRATION = '8h';
 
@@ -19,13 +20,20 @@ export default class AuthService {
         return jwt.sign(payload, this.secretKey, { expiresIn: TOKEN_EXPIRATION });
     }
 
-    public verifyToken(token: string): any {
+    public verifyToken(token: string): Token {
         if (!this.secretKey) {
             throw new Error('SECRET_KEY not initialized');
         }
+
         try {
-            return jwt.verify(token, this.secretKey);
-        } catch (error) {
+            const decoded = jwt.verify(token, this.secretKey);
+
+            if (typeof decoded === 'string') {
+                throw new Error('Invalid token payload');
+            }
+
+            return decoded as Token;
+        } catch (_) {
             throw new Error('Invalid or expired token');
         }
     }

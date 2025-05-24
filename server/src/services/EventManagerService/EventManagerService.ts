@@ -13,7 +13,7 @@ export default class EventManagerService implements EventManagerServiceInterface
         this.observers.get(eventType)!.push(observer);
     }
 
-    notify<T = any>(eventType: string, payload: T) {
+    notify<T = unknown>(eventType: string, payload: T) {
         const list = this.observers.get(eventType);
         if (!list) return;
         list.forEach(observer => observer.update(eventType, payload));
