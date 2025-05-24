@@ -6,6 +6,10 @@ pipeline {
     IMAGE_TAG = "${env.BRANCH_NAME}_${env.BUILD_ID}".replaceAll('/', '-')
   }
 
+  tools {
+    nodejs 'NodeJS_20'
+  }
+
   stages {
     stage('Checkout') {
       steps {
@@ -21,13 +25,7 @@ pipeline {
         GITHUB_TOKEN = credentials('GITHUB_TOKEN')
       }
       steps {
-        sh '''
-          docker run --rm \
-            -v "$PWD":/workspace \
-            -w /workspace \
-            -e GITHUB_TOKEN=$GITHUB_TOKEN \
-            node:20 bash -c "npm install --no-save semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/commit-analyzer @semantic-release/release-notes-generator && npx semantic-release"
-        '''
+        sh 'npx semantic-release'
       }
     }
 
