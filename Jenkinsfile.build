@@ -21,7 +21,13 @@ pipeline {
         GITHUB_TOKEN = credentials('GITHUB_TOKEN')
       }
       steps {
-        sh 'npx semantic-release'
+        sh '''
+          docker run --rm \
+            -v $PWD:/workspace \
+            -w /workspace \
+            -e GITHUB_TOKEN=$GITHUB_TOKEN \
+            node:20 bash -c "npm install --no-save semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/commit-analyzer @semantic-release/release-notes-generator && npx semantic-release"
+        '''
       }
     }
 
