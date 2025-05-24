@@ -30,6 +30,18 @@ pipeline {
         sh 'docker images | grep ${IMAGE_NAME}'
       }
     }
+
+    stage('Semantic Release') {
+      when {
+        branch 'master'
+      }
+      environment {
+        GITHUB_TOKEN = credentials('GITHUB_TOKEN')
+      }
+      steps {
+        sh 'npx semantic-release'
+      }
+    }
   }
 
   post {

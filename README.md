@@ -175,30 +175,35 @@ E2E tests are integrated with [Testomatio](https://testomat.io/) for tracking an
 
 ## Versioning & Releases
 
-Library Master uses **Semantic Versioning (SemVer)** and automates version bumping and changelog generation using [`standard-version`](https://github.com/conventional-changelog/standard-version).
+Library Master follows **Semantic Versioning (SemVer)** and uses [`semantic-release`](https://semantic-release.gitbook.io/) for fully automated release management.
 
-### Workflow
+### How It Works
 
-- Version bump and changelog generation is performed via:
+- Commits follow the **Conventional Commits** format (e.g. `feat:`, `fix:`, `chore:`).
+- When changes are merged into the `master` branch, the Jenkins **Builds** pipeline:
+    - Runs all tests
+    - Executes `semantic-release`
+    - Determines the next version (based on commit messages)
+    - Bumps the version in `package.json`
+    - Updates `CHANGELOG.md`
+    - Creates a Git tag with the new version
+    - Pushes all changes automatically to the `master` branch
 
-  ```bash
-  npm run release
-  ```
+### Commit Format
 
-This:
-- Parses commits with the Conventional Commits format
-- Automatically bumps version in package.json
-- Generates or updates CHANGELOG.md
-- Creates a Git tag
+Release automation relies on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).  
+Examples:
 
-The release process is intended to be run manually from the CLI before deployment, or automated in future CI flows.
+```
+feat: add filtering by availability to book list
+fix: resolve JWT validation bug in login route
+chore: update ESLint and refactor config
+```
 
-Commit Format
-To enable changelog generation, commit messages should follow Conventional Commits, for example:
-feat(): support JWT token refresh
-fix(): fix incorrect year sorting on book list
-chore(): clean up unused dependencies
-
+Breaking changes should include !, for example:
+```
+feat!: drop support for Node.js v18
+```
 
 ---
 ## Run
