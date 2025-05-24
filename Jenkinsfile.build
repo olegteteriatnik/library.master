@@ -13,6 +13,18 @@ pipeline {
       }
     }
 
+    stage('Semantic Release') {
+      when {
+        branch 'master'
+      }
+      environment {
+        GITHUB_TOKEN = credentials('GITHUB_TOKEN')
+      }
+      steps {
+        sh 'npx semantic-release'
+      }
+    }
+
     stage('Build Docker Image') {
       steps {
         sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
@@ -28,18 +40,6 @@ pipeline {
     stage('Verify') {
       steps {
         sh 'docker images | grep ${IMAGE_NAME}'
-      }
-    }
-
-    stage('Semantic Release') {
-      when {
-        branch 'master'
-      }
-      environment {
-        GITHUB_TOKEN = credentials('GITHUB_TOKEN')
-      }
-      steps {
-        sh 'docker run --rm -e GITHUB_TOKEN=${GITHUB_TOKEN} ${IMAGE_NAME}:${IMAGE_TAG} npx semantic-release'
       }
     }
   }
