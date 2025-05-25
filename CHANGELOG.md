@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/olegteteriatnik/library.master/compare/v1.0.1...v1.0.2) (2025-05-25)
+
+
+### Bug Fixes
+
+* **869604y8q:** add earlier versions to CHANGELOG ([e609124](https://github.com/olegteteriatnik/library.master/commit/e60912481c061b18327e5511f38a58ac637abd9d))
+
 ## <small>1.0.1 (2025-05-25)</small>
 
 * chore(release): 1.0.1 ([1cfd865](https://github.com/olegteteriatnik/library.master/commit/1cfd865))
@@ -90,6 +97,3 @@
 * Initial commit: Set up project ([2167918](https://github.com/olegteteriatnik/library.master/commit/2167918))
 * Revert "feat(8695zj4uh): remove vercel.json" ([66826f5](https://github.com/olegteteriatnik/library.master/commit/66826f5))
 * set up jenkins files, add ci/cd info to README file ([29703ed](https://github.com/olegteteriatnik/library.master/commit/29703ed))
-
-
-
