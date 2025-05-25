@@ -4,12 +4,32 @@ pipeline {
   environment {
     IMAGE_NAME = 'library.master-app'
     IMAGE_TAG = "${env.BRANCH_NAME}_${env.BUILD_ID}".replaceAll('/', '-')
+    GIT_AUTHOR_NAME = 'CI Bot'
+    GIT_AUTHOR_EMAIL = 'ci@example.com'
+    GIT_COMMITTER_NAME = 'CI Bot'
+    GIT_COMMITTER_EMAIL = 'ci@example.com'
   }
 
   stages {
     stage('Checkout') {
       steps {
         checkout scm
+        sh """
+          git config user.name "${GIT_AUTHOR_NAME}"
+          git config user.email "${GIT_AUTHOR_EMAIL}"
+          git config --global --add safe.directory \$(pwd)
+        """
+      }
+    }
+
+    stage('Semantic Release') {
+      when {
+        branch 'master'
+      }
+      steps {
+        sh """
+          npx semantic-release
+        """
       }
     }
 
@@ -28,24 +48,6 @@ pipeline {
     stage('Verify') {
       steps {
         sh 'docker images | grep ${IMAGE_NAME}'
-      }
-    }
-
-    stage('Semantic Release') {
-      when {
-        branch 'master'
-      }
-      environment {
-        GITHUB_TOKEN = credentials('GITHUB_TOKEN')
-      }
-      steps {
-        sh """
-          docker run --rm \
-            -e GITHUB_TOKEN=$GITHUB_TOKEN \
-            -e CI=true \
-            ${IMAGE_NAME}:${IMAGE_TAG} \
-            npx semantic-release
-        """
       }
     }
   }
