@@ -4,10 +4,6 @@ pipeline {
   environment {
     IMAGE_NAME = 'library.master-app'
     IMAGE_TAG = "${env.BRANCH_NAME}_${env.BUILD_ID}".replaceAll('/', '-')
-    GIT_AUTHOR_NAME = 'CI Bot'
-    GIT_AUTHOR_EMAIL = 'ci@example.com'
-    GIT_COMMITTER_NAME = 'CI Bot'
-    GIT_COMMITTER_EMAIL = 'ci@example.com'
   }
 
   stages {
@@ -22,15 +18,17 @@ pipeline {
         branch 'master'
       }
       steps {
-        sh '''
-          docker build -t semrel-runner -f Dockerfile .
-          docker run --rm \
-            -e GITHUB_TOKEN=$GITHUB_TOKEN \
-            -e CI=true \
-            -v $PWD:/project \
-            -w /project \
-            semrel-runner npx semantic-release
-        '''
+        withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
+          sh '''
+            docker build -t semrel-runner -f Dockerfile .
+            docker run --rm \
+              -e GITHUB_TOKEN=$GITHUB_TOKEN \
+              -e CI=true \
+              -v $(pwd):/project \
+              -w /project \
+              semrel-runner npx semantic-release
+          '''
+        }
       }
     }
 
