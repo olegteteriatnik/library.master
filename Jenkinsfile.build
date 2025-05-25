@@ -42,6 +42,7 @@ pipeline {
         sh """
           docker run --rm \
             -e GITHUB_TOKEN=$GITHUB_TOKEN \
+            -e CI=true \
             ${IMAGE_NAME}:${IMAGE_TAG} \
             npx semantic-release
         """
