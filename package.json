@@ -9,11 +9,14 @@
     "start": "node dist/server/src/index.js",
     "start:fileReader": "node dist/server/src/index.js fileReader",
     "test:unit": "NODE_OPTIONS='--loader ts-node/esm' mocha --config tests/.mocharc.json",
-    "lint": "eslint . --ext .ts,.js"
+    "lint": "eslint . --ext .ts,.js",
+    "prepare": "husky"
   },
   "author": "Oleg Teteriatnik",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.27.0",
     "@eslint/json": "^0.12.0",
     "@semantic-release/changelog": "^6.0.3",
@@ -37,6 +40,7 @@
     "eslint": "^9.27.0",
     "eslint-plugin-cypress": "^4.3.0",
     "globals": "^16.1.0",
+    "husky": "^9.1.7",
     "mocha": "^11.1.0",
     "semantic-release": "^24.2.5",
     "sinon-chai": "^3.7.0",

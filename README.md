@@ -50,6 +50,10 @@ Also, it includes basic Node.js project that reads data from a file and displays
     - Frontend (client/public)
     - Unit tests and E2E tests (Playwright + Cypress)
 - All modules (including tests and Cypress specs) are fully linted and pass static analysis.
+- - **Husky** is used for Git hooks automation.
+- Git hooks configured:
+    - `pre-commit`: runs lint and unit tests before each commit
+    - `commit-msg`: validates commit messages using commitlint and enforces conventional commit format
 
 ---
 
@@ -414,6 +418,33 @@ Make sure you compiled the code using:
 
 ### Unable to Connect to Database
 Ensure your environment variables for the database configuration are correctly set in the .env file.
+
+---
+
+## Branching Strategy
+
+We follow a simplified GitHub Flow strategy, customized for this project:
+
+### Branches
+
+- `master` — main branch, always contains stable, deployable code.
+- `feat/*` — feature branches for new functionality.
+- `fix/*` — for bugfixes.
+- `hotfix/*` — for urgent fixes to `master`.
+- `test/*` — temporary branches used for QA, E2E scenarios, integration testing, test data validation, etc.
+
+#### Examples:
+- `feat/add-book-search`
+- `fix/book-pagination`
+- `hotfix/critical-payment-bug`
+- `test/manual-flow-debug`
+
+### Rules:
+
+- All changes go through pull requests into `master`.
+- All commits follow [Conventional Commit](https://www.conventionalcommits.org/) format.
+- CI (unit) must pass before merging any branch.
+- Direct commits to `master` are forbidden — use PRs only.
 
 ---
 
