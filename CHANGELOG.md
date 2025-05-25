@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/olegteteriatnik/library.master/compare/v1.0.2...v1.1.0) (2025-05-25)
+
+
+### Features
+
+* **869604y8q:** implement pre-commit hooks with lint and unit tests ([fdc1da9](https://github.com/olegteteriatnik/library.master/commit/fdc1da9b1cd8707dcf0d24d258ea9a2e12d2840a))
+
 ## [1.0.2](https://github.com/olegteteriatnik/library.master/compare/v1.0.1...v1.0.2) (2025-05-25)
 
 
