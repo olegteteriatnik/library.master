@@ -8,6 +8,8 @@ COPY package.json .
 COPY .npmrc .
 
 RUN npm i
+
+COPY .git .git
 COPY . .
 
 ENV NODE_ENV=production
