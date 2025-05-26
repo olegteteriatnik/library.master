@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/olegteteriatnik/library.master/compare/v1.1.0...v1.2.0) (2025-05-26)
+
+
+### Features
+
+* **869604y8q:** add custom error handling to LibraryService with specific error classes ([97b2cc2](https://github.com/olegteteriatnik/library.master/commit/97b2cc2018660ac7978f1eddf95877c82aaf9c61))
+
 # [1.1.0](https://github.com/olegteteriatnik/library.master/compare/v1.0.2...v1.1.0) (2025-05-25)
 
 
