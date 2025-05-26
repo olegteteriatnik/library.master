@@ -33,7 +33,13 @@ describe('LibraryService', () => {
         };
 
         const dbRow = { rows: [expectedResponse] };
-        const transportService = { query: sandbox.stub().resolves(dbRow) };
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [] })
+                .onSecondCall().resolves(dbRow),
+        };
+
         const dbMock = createDatabaseMock(transportService);
         const eventManagerServiceMock = createEventManagerMock();
         const libraryService = new LibraryService(dbMock, eventManagerServiceMock);
@@ -67,7 +73,13 @@ describe('LibraryService', () => {
         };
 
         const dbRow = { rows: [expectedResponse] };
-        const transportService = { query: sandbox.stub().resolves(dbRow) };
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [] })
+                .onSecondCall().resolves(dbRow),
+        };
+
         const dbMock = createDatabaseMock(transportService);
         const eventManagerServiceMock = createEventManagerMock();
         const libraryService = new LibraryService(dbMock, eventManagerServiceMock);
@@ -101,7 +113,13 @@ describe('LibraryService', () => {
         };
 
         const dbRow = { rows: [expectedResponse] };
-        const transportService = { query: sandbox.stub().resolves(dbRow) };
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [] })
+                .onSecondCall().resolves(dbRow),
+        };
+
         const dbMock = createDatabaseMock(transportService);
         const eventManagerServiceMock = createEventManagerMock();
         const libraryService = new LibraryService(dbMock, eventManagerServiceMock);
@@ -135,7 +153,13 @@ describe('LibraryService', () => {
         };
 
         const dbRow = { rows: [expectedResponse] };
-        const transportService = { query: sandbox.stub().resolves(dbRow) };
+
+        const transportService = {
+            query: sandbox.stub()
+                .onFirstCall().resolves({ rows: [] })
+                .onSecondCall().resolves(dbRow),
+        };
+
         const dbMock = createDatabaseMock(transportService);
         const eventManagerServiceMock = createEventManagerMock();
         const libraryService = new LibraryService(dbMock, eventManagerServiceMock);

@@ -1,4 +1,5 @@
 import { injectable, inject } from 'inversify';
+import { BookNotFoundError, DuplicateBookError, InvalidBookError } from './errors';
 import Types from '../../../params/constants/types';
 import { Database } from '../../../config/database';
 import { BookFactory } from '../../factories/BookFactory/BookFactory';
@@ -23,6 +24,17 @@ export default class LibraryService {
         const pool = await this.db.connect();
         const book = BookFactory.create(data);
         const values = book.toDbValues();
+
+        const checkQuery = `
+            SELECT * FROM books WHERE title = $1 AND author = $2 AND year = $3;
+        `;
+
+        const checkResult = await pool.query(checkQuery, [data.title, data.author, data.year]);
+
+        if (checkResult.rows.length > 0) {
+            throw new DuplicateBookError('A book with the same title, author and year already exists');
+        }
+
         const query = `
             INSERT INTO books (title, author, year, "isAvailable", type)
             VALUES ($1, $2, $3, $4, $5)
@@ -45,7 +57,7 @@ export default class LibraryService {
         const result = await pool.query(query, [id]);
 
         if (result.rows.length === 0) {
-            throw new Error(`Book with id ${id} not found`);
+            throw new BookNotFoundError(`Book with id ${id} not found`);
         }
 
         return result.rows[0] as BookEntity;
@@ -87,7 +99,7 @@ export default class LibraryService {
         const result = await pool.query(query, values);
 
         if (result.rowCount === 0) {
-            throw new Error(`Book with id ${data.id} not found`);
+            throw new BookNotFoundError(`Book with id ${data.id} not found`);
         }
 
         this.eventManagerService.notify('bookDeleted', { id: data.id });
@@ -113,7 +125,7 @@ export default class LibraryService {
             if (validSortFields.includes(data.sortBy)) {
                 query += ` ORDER BY ${data.sortBy}`;
             } else {
-                throw new Error(`${data.sortBy} is invalid sort field`);
+                throw new InvalidBookError(`${data.sortBy} is invalid sort field`);
             }
         }
 
@@ -192,7 +204,7 @@ export default class LibraryService {
         const result = await pool.query(query, [id]);
 
         if (result.rows.length === 0) {
-            throw new Error(`Book with id ${id} not found.`);
+            throw new BookNotFoundError(`Book with id ${id} not found.`);
         }
 
         return {
