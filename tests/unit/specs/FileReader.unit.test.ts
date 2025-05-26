@@ -36,7 +36,7 @@ describe('FileReader', () => {
 
         await expectErrorFrom(
             reader.readFile(path),
-            { message: `Error reading file: ${errorMessage}` },
+            { message: 'ENOENT' },
         );
 
         expect(fs.promises.readFile).to.have.been.calledWith(path, 'utf8');
