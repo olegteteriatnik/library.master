@@ -4,7 +4,9 @@
   "description": "E2E tests for library.master with Selenium WebDriver",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config=jest.config.js"
+    "test": "jest --config=jest.config.js",
+    "test:chrome": "BROWSER=chrome npm test",
+    "test:firefox": "BROWSER=firefox npm test"
   },
   "keywords": [],
   "author": "Oleg Teteriatnik",

@@ -9,7 +9,7 @@ let driver: WebDriver;
 
 describe('Books List page is displayed correctly.', () => {
     beforeAll(async () => {
-        driver = await webDriverHelper.buildChromeDriver();
+        driver = await webDriverHelper.buildDriver();
     });
 
     afterAll(async () => {
