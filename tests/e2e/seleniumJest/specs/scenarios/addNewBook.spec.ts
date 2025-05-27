@@ -19,7 +19,7 @@ let addBookModal: AddBookModal;
 
 describe('Add new book cases.', () => {
     beforeAll(async () => {
-        driver = await webDriverHelper.buildChromeDriver();
+        driver = await webDriverHelper.buildDriver();
         booksListPage = new BooksListPage(driver);
         addBookModal = new AddBookModal(driver);
         const userData = await commonHelper.getUserData();

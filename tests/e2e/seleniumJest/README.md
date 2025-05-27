@@ -71,8 +71,36 @@ These credentials are used to fetch access tokens and authorize API requests wit
 
 ---
 
+## Cross-Browser Testing
+
+By default, all tests run in **Google Chrome**.  
+To run tests in different browsers (e.g. **Firefox**), use the `BROWSER` environment variable.
+
+### Run in Chrome (default):
+
+```bash
+npm run test:chrome
+```
+
+### Run in Firefox:
+
+```bash
+npm run test:firefox
+```
+
+These commands will launch the browser accordingly using the Selenium WebDriver.
+
+Supported browsers (locally):
+- Chrome
+- Firefox
+
+Browser settings are defined in [`helpers/webDriverHelper.ts`](./helpers/webDriverHelper.ts).
+
+---
+
 ## Notes
 
-- All tests use **real Chrome browser** (non-headless by default)
+- Tests run in real browsers (Chrome by default, Firefox supported)
+- All tests use **real browser** (non-headless by default)
 - Browser is maximized to `1920x1080` via ChromeOptions
 - You can customize the WebDriver config in `helpers/webDriverHelper.ts`
