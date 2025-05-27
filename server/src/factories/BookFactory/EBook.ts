@@ -1,34 +1,16 @@
-import { Book } from './interfaces/Book';
+import { BaseBook } from './BaseBook';
 import { BookType } from '../../interfaces/BookType';
 
-export class EBook implements Book {
+export class EBook extends BaseBook {
     constructor(
-        private title: string,
-        private author: string,
-        private year: number,
-    ) {}
-
-    getTitle(): string {
-        return this.title;
-    }
-
-    getAuthor(): string {
-        return this.author;
-    }
-
-    getYear(): number {
-        return this.year;
-    }
-
-    getAvailability(): boolean {
-        return true;
+        title: string,
+        author: string,
+        year: number,
+    ) {
+        super(title, author, year, true);
     }
 
     getType(): BookType {
         return BookType.ebook;
-    }
-
-    toDbValues(): [string, string, number, boolean, string] {
-        return [this.title, this.author, this.year, this.getAvailability(), this.getType()];
     }
 }
