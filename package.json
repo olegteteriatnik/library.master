@@ -8,7 +8,7 @@
     "build": "npm run clean && tsc",
     "start": "node dist/server/src/index.js",
     "start:fileReader": "node dist/server/src/index.js fileReader",
-    "test:unit": "NODE_OPTIONS='--loader ts-node/esm' mocha --config tests/.mocharc.json",
+    "test:unit": "NODE_OPTIONS='--loader ts-node/esm' mocha --config tests/unit/.mocharc.json",
     "lint": "eslint . --ext .ts,.js",
     "prepare": "husky"
   },
