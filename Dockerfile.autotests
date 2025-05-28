@@ -10,4 +10,4 @@ COPY ./tests/e2e/playwright .
 
 RUN npx playwright install --with-deps
 
-ENTRYPOINT ["npx", "playwright", "test:chromium"]
+ENTRYPOINT ["npx", "playwright", "test:chromium", "--config=./configs/playwright.config.ts"]
