@@ -13,6 +13,25 @@ These tests validate real user interaction with the application.
 - Uses Playwright Test Runner
 - Supports local run (headed)
 - CI-ready — runs in headless mode automatically
+- Cross-browser support (Chromium & Firefox)
+
+---
+
+## Cross-browser Execution
+
+Playwright is configured to run tests in both **Chromium (Chrome)** and **Firefox**.
+
+By default:
+
+- **CI runs only Chromium** (for speed & stability).
+- **Local runs** can target **either browser**, to verify cross-browser compatibility.
+
+### Projects configured:
+
+- `chromium` — maps to `Desktop Chrome`
+- `firefox` — maps to `Desktop Firefox`
+
+Each project uses the shared base settings but with browser-specific overrides (like viewport or launch behavior).
 
 ---
 
@@ -25,16 +44,22 @@ cd tests/e2e/playwright
 npm i
 ```
 
-### Run all tests
+### Run all tests in Chromium
 
 ```bash
-npm test
+npm test:chromium
+```
+
+### Run all tests in Firefox
+
+```bash
+npm test:firefox
 ```
 
 This runs all specs in `specs/` using `configs/playwright.config.ts`.  
 Browsers launch in **headed** mode by default (unless `CI=true` is set).
 
-### Run a specific test spec
+### Run a specific test spec in Chromium
 
 ```bash
 npm run test:spec -- specs/loginToLibraryMaster.spec.ts
