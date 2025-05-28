@@ -4,6 +4,7 @@
   "description": "E2E tests for library.master with Playwright",
   "main": "index.js",
   "scripts": {
+    "test": "playwright test --project=chromium --config=./configs/playwright.config.ts",
     "test:chromium": "playwright test --project=chromium --config=./configs/playwright.config.ts",
     "test:firefox": "playwright test --project=firefox --config=./configs/playwright.config.ts",
     "test:spec": "playwright test --project=chromium --config=./configs/playwright.config.ts"
