@@ -1,5 +1,10 @@
-HCP_CLIENT_ID=client-id
-HCP_CLIENT_SECRET=client-secret
-HCP_AUTH_URL=auth-url
-HCP_API_BASE_URL=base-url
-HCP_AUDIENCE=audience
+SECRET_KEY=secret-key
+
+AUTH_USERNAME=username
+AUTH_PASSWORD=password
+
+DB_HOST=host
+DB_PORT=port
+DB_NAME=db-name
+DB_USER=db-user
+DB_PASSWORD=db-password

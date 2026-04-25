@@ -8,7 +8,7 @@ test.describe('Log in to LibraryMaster cases.', () => {
     test('@T4d74d633 It could be possible to log in to LibraryMaster.', async ({ page }) => {
         const loginPage = new LoginPage(page);
         const booksListPage = new BooksListPage(page);
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         await loginPage.visit();
         await loginPage.login(userData);
         await booksListPage.waitUntilIsOpened();

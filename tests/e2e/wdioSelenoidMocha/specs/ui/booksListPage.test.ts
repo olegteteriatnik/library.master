@@ -7,7 +7,7 @@ import texts from '../../texts';
 describe('Books List page is displayed correctly.', () => {
     it('Books List page is displayed.', async () => {
         const booksListPage = new BooksListPage();
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         await apiHelper.signInToLibraryMasterApp(userData);
         await booksListPage.visit();
         await booksListPage.waitForBooksListLoaded();

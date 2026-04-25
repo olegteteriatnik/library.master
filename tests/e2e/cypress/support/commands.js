@@ -2,6 +2,7 @@ import { LibraryMasterApi } from '../api/libraryMasterApi';
 import { BooksListPage } from '../pages/BooksListPage';
 import { AddBookModal } from '../pages/fragments/AddBookModal';
 import staticParams from '../params/constants';
+import frameworkHelper from '../helpers/frameworkHelper';
 
 const libraryMasterApi = new LibraryMasterApi();
 const booksListPage = new BooksListPage();
@@ -10,8 +11,9 @@ const addBookModal = new AddBookModal();
 let userAccessToken;
 
 Cypress.Commands.add('loginAndVisitBooksListPage', () => {
-    cy.task('getSecret', 'authUser').then((userData) => {
-        libraryMasterApi.authApi.generateUserToken(userData).then((token) => {
+    const userData = frameworkHelper.getUserData();
+
+    return libraryMasterApi.authApi.generateUserToken(userData).then((token) => {
             cy.visit(staticParams.routes.booksList, {
                 onBeforeLoad(win) {
                     win.localStorage.setItem('token', token);
@@ -20,7 +22,6 @@ Cypress.Commands.add('loginAndVisitBooksListPage', () => {
 
             return cy.wrap(token);
         });
-    });
 });
 
 Cypress.Commands.add('waitForBookToBeCreated', (token, title) => {
@@ -48,8 +49,9 @@ Cypress.Commands.add('waitForBookToBeCreated', (token, title) => {
 });
 
 Cypress.Commands.add('addBookOnListPage', (bookData) => {
-    cy.task('getSecret', 'authUser').then((userData) => {
-        libraryMasterApi.authApi.generateUserToken(userData).then((token) => {
+    const userData = frameworkHelper.getUserData();
+
+    return libraryMasterApi.authApi.generateUserToken(userData).then((token) => {
             userAccessToken = token;
 
             cy.visit(staticParams.routes.booksList, {
@@ -68,7 +70,6 @@ Cypress.Commands.add('addBookOnListPage', (bookData) => {
                 cy.wrap(book).as('createdBook');
             });
         });
-    });
 });
 
 Cypress.Commands.add('deleteCreatedBook', () => {

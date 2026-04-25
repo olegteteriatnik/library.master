@@ -115,11 +115,9 @@ cp .envExample .env
 Then fill in the required values:
 
 ```env
-HCP_CLIENT_ID=your-client-id
-HCP_CLIENT_SECRET=your-client-secret
-HCP_AUTH_URL=https://your-auth-url
-HCP_API_BASE_URL=https://your-api-url
-HCP_AUDIENCE=your-audience
+BASE_URL=http://localhost:3000
+AUTH_USERNAME=admin
+AUTH_PASSWORD=admin123
 ```
 
 These environment variables are required to fetch secrets from Vault and generate user tokens for authorization.

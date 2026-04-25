@@ -11,7 +11,7 @@ let createBookResult: BookEntity;
 
 describe('Book entity create cases.', () => {
     beforeAll(async () => {
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         userAccessToken = await libraryMasterApi.authApi.generateUserToken(userData);
         createBookResult = await libraryMasterApi.booksApi.create(userAccessToken, createBookPayload);
     });

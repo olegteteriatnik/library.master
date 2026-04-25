@@ -2,10 +2,10 @@ FROM mcr.microsoft.com/playwright:v1.40.0-jammy
 
 WORKDIR /tests/e2e/playwright
 
-COPY ./tests/e2e/playwright/package*.json ./
-COPY ./tests/e2e/playwright/.npmrc ./
+COPY ./tests/e2e/playwright/package*.json ./tests/e2e/playwright/package-lock.json ./
 
-RUN npm i
+RUN npm сi
+
 COPY ./tests/e2e/playwright .
 
 RUN npx playwright install --with-deps

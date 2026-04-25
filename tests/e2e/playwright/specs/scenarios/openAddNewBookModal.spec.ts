@@ -6,7 +6,7 @@ import AddBookModal from '../../pages/fragments/AddBookModal';
 
 test.describe('Add New Book modal cases.', () => {
     test('@T2e3a0862 It could be possible to open Add New Book modal.', async ({ page }) => {
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         const booksListPage = new BooksListPage(page);
         const addBookModal = new AddBookModal(page);
         await apiHelper.signInToLibraryMasterApp(page, userData);

@@ -1,7 +1,5 @@
 import { injectable } from 'inversify';
 import { Pool } from 'pg';
-import { getSecret } from './vault';
-import DbData from '../params/interfaces/DbData';
 import IDatabaseConfig from '../params/interfaces/IDatabaseConfig';
 
 @injectable()
@@ -11,15 +9,22 @@ export class Database {
     public async connect(): Promise<Pool> {
         if (this.pool) return this.pool;
 
-        const dbData: DbData = await getSecret('database');
+        const user = process.env.DB_USER;
+        const host = process.env.DB_HOST;
+        const database = process.env.DB_NAME;
+        const password = process.env.DB_PASSWORD;
+
+        if (!user || !host || !database || !password) {
+            throw new Error('Database environment variables are missing in .env file');
+        }
 
         const config: IDatabaseConfig = {
-            user: dbData.username,
-            host: dbData.host,
-            database: 'library-db',
-            password: dbData.password,
+            user,
+            host,
+            database,
+            password,
             port: 5432,
-            ssl: { rejectUnauthorized: false },
+            // ssl: { rejectUnauthorized: false },
         };
 
         this.pool = new Pool(config);

@@ -19,7 +19,7 @@ let book: BookEntity;
 
 test.describe('Books Details page is displayed correctly', () => {
     test.beforeAll(async () => {
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         userAccessToken = await libraryMasterApi.authApi.generateUserToken(userData);
         book = await libraryMasterApi.booksApi.create(userAccessToken, createBookPayload);
     });

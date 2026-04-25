@@ -5,13 +5,13 @@ const libraryMasterApi = new LibraryMasterApi();
 
 class ApiHelper {
     createBook(createBookPayload) {
-        return frameworkHelper.getUserData().then((userData) => {
-            return libraryMasterApi.authApi.generateUserToken(userData).then((token) => {
+        const userData = frameworkHelper.getUserData();
+
+        return libraryMasterApi.authApi.generateUserToken(userData).then((token) => {
                 return libraryMasterApi.booksApi.create(token, createBookPayload).then((book) => {
                     return { book, token };
                 });
             });
-        });
     }
 }
 

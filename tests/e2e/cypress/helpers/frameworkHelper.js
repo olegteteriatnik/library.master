@@ -8,7 +8,10 @@ class FrameworkHelper {
     }
 
     getUserData() {
-        return cy.task('getSecret', 'authUser');
+        const username = Cypress.env("AUTH_USERNAME");
+        const password = Cypress.env("AUTH_PASSWORD");
+
+        return { username, password };
     }
 }
 
