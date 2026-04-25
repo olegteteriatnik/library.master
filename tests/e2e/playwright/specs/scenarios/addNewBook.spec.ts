@@ -19,7 +19,7 @@ test.describe('Add new book cases.', () => {
     test.beforeEach(async ({ page }) => {
         booksListPage = new BooksListPage(page);
         addBookModal = new AddBookModal(page);
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         userAccessToken = await apiHelper.signInToLibraryMasterApp(page, userData);
         await booksListPage.visit();
         await booksListPage.clickAddNewBookButton();

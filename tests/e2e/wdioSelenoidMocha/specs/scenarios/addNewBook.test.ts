@@ -19,7 +19,7 @@ describe('Add new book cases.', () => {
     before(async () => {
         booksListPage = new BooksListPage();
         addBookModal = new AddBookModal();
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         userAccessToken = await apiHelper.signInToLibraryMasterApp(userData);
         await booksListPage.visit();
         await booksListPage.clickAddNewBookButton();

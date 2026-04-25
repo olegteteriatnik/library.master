@@ -4,5 +4,5 @@ export default interface IDatabaseConfig {
     database: string;
     password: string;
     port: number;
-    ssl: { rejectUnauthorized: boolean };
+    ssl?: { rejectUnauthorized: boolean };
 }

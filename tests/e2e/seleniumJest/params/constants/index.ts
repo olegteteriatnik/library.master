@@ -1,5 +1,15 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const baseUrl = process.env.BASE_URL;
+
+if (!baseUrl) {
+    throw new Error('BASE_URL is not present in .env file');
+}
+
 export default {
-    baseUrl: 'http://203.161.47.9:3100',
+    baseUrl,
     routes: {
         login: '/login',
         book: (id: number) => `/book?id=${id}`,

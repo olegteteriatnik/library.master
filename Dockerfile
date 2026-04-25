@@ -4,14 +4,15 @@ RUN apt-get update && apt-get install -y git
 
 WORKDIR /app
 
-COPY package.json .
-COPY .npmrc .
+COPY package.json package-lock.json ./
 
-RUN npm i
+RUN npm ci
+
 COPY . .
-
-ENV NODE_ENV=production
 
 RUN npm run test:unit
 RUN npm run build
+
+ENV NODE_ENV=production
+
 CMD ["npm", "start"]

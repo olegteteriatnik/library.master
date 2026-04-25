@@ -6,7 +6,7 @@ import LoginPage from '../../pages/LoginPage';
 
 test.describe('Log out cases.', () => {
     test('@T44049f54 It could be possible to log out from Books page.', async ({ page }) => {
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         const booksListPage = new BooksListPage(page);
         const loginPage = new LoginPage(page);
         await apiHelper.signInToLibraryMasterApp(page, userData);

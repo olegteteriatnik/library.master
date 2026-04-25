@@ -12,7 +12,6 @@ These tests validate real user interaction with the application.
 - Uses centralized configuration and helpers
 - Uses Playwright Test Runner
 - Supports local run (headed)
-- CI-ready — runs in headless mode automatically
 - Cross-browser support (Chromium & Firefox)
 
 ---
@@ -20,11 +19,6 @@ These tests validate real user interaction with the application.
 ## Cross-browser Execution
 
 Playwright is configured to run tests in both **Chromium (Chrome)** and **Firefox**.
-
-By default:
-
-- **CI runs only Chromium** (for speed & stability).
-- **Local runs** can target **either browser**, to verify cross-browser compatibility.
 
 ### Projects configured:
 
@@ -80,16 +74,12 @@ cp .envExample .env
 Then fill in the required values:
 
 ```env
-HCP_CLIENT_ID=your-client-id
-HCP_CLIENT_SECRET=your-client-secret
-HCP_AUTH_URL=https://your-auth-url
-HCP_API_BASE_URL=https://your-api-url
-HCP_AUDIENCE=your-audience
+BASE_URL=http://localhost:3000
+AUTH_USERNAME=username
+AUTH_PASSWORD=password
 ```
 
 These environment variables are required to fetch secrets from Vault and generate user tokens for authorization.
-
-> ✅ These are **not needed in CI**, as Jenkins injects them via credentials.
 
 ---
 
@@ -99,7 +89,7 @@ No extra setup needed — when `CI=true` is set in the environment, Playwright a
 
 ---
 
-## Integration with Testomatio
+## Integration with Testomatio - DEPRECATED
 
 Project is integrated with [Testomatio](https://testomat.io/) — a test management system for tracking automated test cases.
 

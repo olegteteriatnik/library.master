@@ -1,5 +1,5 @@
 export default {
-    baseUrl: 'http://203.161.47.9:3100',
+    baseUrl: process.env.BASE_URL,
     routes: {
         login: '/login',
         book: (id: number) => `/book?id=${id}`,

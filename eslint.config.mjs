@@ -6,7 +6,7 @@ import { defineConfig } from "eslint/config";
 import pluginCypress from "eslint-plugin-cypress/flat";
 
 export default defineConfig([
-  { ignores: ["dist/**"] },
+  { ignores: ["dist/**", "package-lock.json"] },
   pluginCypress.configs.recommended,
   {
     files: ["tests/e2e/cypress/**/*.cy.js"],

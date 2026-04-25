@@ -14,7 +14,7 @@ let book: BookEntity;
 
 test.describe('Search book cases.', () => {
     test.beforeAll(async () => {
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         userAccessToken = await libraryMasterApi.authApi.generateUserToken(userData);
         book = await libraryMasterApi.booksApi.create(userAccessToken, createBookPayload);
     });

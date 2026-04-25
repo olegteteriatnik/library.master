@@ -1,5 +1,9 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export default {
-    baseUrl: 'http://203.161.47.9:3100',
+    baseUrl: process.env.BASE_URL,
     routes: {
         booksList: '/',
         login: '/login',

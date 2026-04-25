@@ -1,5 +1,3 @@
-HCP_CLIENT_ID=client-id
-HCP_CLIENT_SECRET=client-secret
-HCP_AUTH_URL=auth-url
-HCP_API_BASE_URL=base-url
-HCP_AUDIENCE=audience
+BASE_URL=http://localhost:3000
+AUTH_USERNAME=username
+AUTH_PASSWORD=password

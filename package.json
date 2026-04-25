@@ -1,7 +1,7 @@
 {
   "name": "library.master",
   "version": "1.2.0",
-  "description": "Test IDP project",
+  "description": "Pet project Library Master",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf dist",

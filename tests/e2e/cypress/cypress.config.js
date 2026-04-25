@@ -1,14 +1,18 @@
 import { defineConfig } from 'cypress';
-import { getSecret } from './tasks/getSecret';
+import dotenv from 'dotenv';
 import staticParams from './params/constants/index';
+
+dotenv.config();
 
 export default defineConfig({
   e2e: {
-    setupNodeEvents(on, _config) {
-      on('task', { getSecret });
-    },
+    setupNodeEvents(_on, _config) {},
     specPattern: 'specs/**/*.cy.{js,ts}',
     supportFile: 'support/e2e.js',
     baseUrl: staticParams.baseUrl,
+  },
+  env: {
+    AUTH_USERNAME: process.env.AUTH_USERNAME,
+    AUTH_PASSWORD: process.env.AUTH_PASSWORD,
   },
 });

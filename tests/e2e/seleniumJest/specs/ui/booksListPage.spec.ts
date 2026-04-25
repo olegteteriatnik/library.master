@@ -17,7 +17,7 @@ describe('Books List page is displayed correctly.', () => {
     });
 
     test('Books List page is displayed.', async () => {
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         await apiHelper.signInToLibraryMasterApp(userData, driver);
         const booksListPage = new BooksListPage(driver);
         await booksListPage.visit();

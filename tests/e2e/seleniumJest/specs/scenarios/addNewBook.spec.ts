@@ -22,7 +22,7 @@ describe('Add new book cases.', () => {
         driver = await webDriverHelper.buildDriver();
         booksListPage = new BooksListPage(driver);
         addBookModal = new AddBookModal(driver);
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         userAccessToken = await apiHelper.signInToLibraryMasterApp(userData, driver);
         await booksListPage.visit();
         await booksListPage.clickAddNewBookButton();

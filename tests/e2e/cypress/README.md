@@ -10,7 +10,6 @@ These tests validate real user interaction with the application via the UI and R
 
 - Based on Page Object Model (POM)
 - Centralized helpers, custom Cypress commands, and API layers
-- Secrets fetched dynamically from Vault via custom tasks
 - Local run support with Cypress UI (`cypress open`)
 - Covers both UI flows and API verification
 - Book creation/cleanup handled automatically in tests
@@ -55,18 +54,12 @@ cp .envExample .env
 Then fill in the required fields:
 
 ```env
-HCP_CLIENT_ID=your-client-id
-HCP_CLIENT_SECRET=your-client-secret
-HCP_AUTH_URL=https://your-auth-url
-HCP_API_BASE_URL=https://your-api-url
-HCP_AUDIENCE=your-audience
+BASE_URL=http://localhost:3000
+AUTH_USERNAME=username
+AUTH_PASSWORD=password
 ```
 
-These variables are required to:
-
-- Authenticate with Vault
-- Fetch test user credentials
-- Generate tokens for authorized API actions (e.g., book creation/deletion)
+These variables are used for local authentication and API/UI test execution.
 
 ---
 

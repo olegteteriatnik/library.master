@@ -6,7 +6,7 @@ const libraryMasterApi = new LibraryMasterApi();
 
 test.describe('Generate user access token cases.', () => {
     test('@T1bb0f04d User access token could be generated.', async () => {
-        const userData = await commonHelper.getUserData();
+        const userData = commonHelper.getUserData();
         const generatedUserAccessToken = await libraryMasterApi.authApi.generateUserToken(userData);
 
         expect(generatedUserAccessToken).toBeDefined();
