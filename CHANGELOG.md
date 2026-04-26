@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/olegteteriatnik/library.master/compare/v1.2.0...v1.3.0) (2026-04-26)
+
+
+### Features
+
+* **869d21vgm:** refactor project, get rid using vault, set up local run ([9713c34](https://github.com/olegteteriatnik/library.master/commit/9713c34964977f206bcdf5845575a75141b7c232))
+* add INFRASTRUCTURE_NOTES for redeploy the application ([483eb5e](https://github.com/olegteteriatnik/library.master/commit/483eb5eb6785bc25003311d2c552c9cc1f25744d))
+
 # [1.2.0](https://github.com/olegteteriatnik/library.master/compare/v1.1.0...v1.2.0) (2025-05-26)
 
 
